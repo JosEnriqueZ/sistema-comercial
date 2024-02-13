@@ -1,0 +1,26 @@
+@import url('./main-layout.css');
+@import url('./views/grillaporsifunciona-view.css');
+@import url('./views/reportes-view.css');
+@import url('./views/editar-tabla-view.css');
+@import url('./views/colaboracion-view.css');
+@import url('./views/form-credit-card-view.css');
+@import url('./views/chat-e-view.css');
+@import url('./views/galeria-imagenes-view.css');
+
+
+.login-rich-content {
+  /*background-image: url("https://t3.ftcdn.net/jpg/02/38/16/94/360_F_238169477_Daonex5XsbOWLdcL0x8IcQ91RCJGubDy.jpg"); */
+  background-image: url("./img/misti2.svg");;
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  height: 100vh;
+}
+.login-rich-content vaadin-login-form {
+  align-items: center;
+  display: flex;
+  max-width: 300px;
+}
+.login-rich-content vaadin-login-form-wrapper {
+  background-image: none;
+}
