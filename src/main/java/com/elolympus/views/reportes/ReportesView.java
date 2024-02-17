@@ -67,7 +67,7 @@ public class ReportesView extends Div {
         mobileFilters.addClassNames(LumoUtility.Padding.MEDIUM, LumoUtility.BoxSizing.BORDER,
                 LumoUtility.AlignItems.CENTER);
         mobileFilters.addClassName("mobile-filters");
-
+        this.getStyle().set("background","red");
         Icon mobileIcon = new Icon("lumo", "plus");
         Span filtersHeading = new Span("Filters");
         mobileFilters.add(mobileIcon, filtersHeading);

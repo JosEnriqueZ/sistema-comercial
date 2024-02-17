@@ -190,6 +190,7 @@ public class EditarTablaView extends Div implements BeforeEnterObserver {
         cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonLayout.add(save, cancel);
+        this.getStyle().set("background","red");
         editorLayoutDiv.add(buttonLayout);
     }
 
@@ -212,6 +213,5 @@ public class EditarTablaView extends Div implements BeforeEnterObserver {
     private void populateForm(SamplePerson value) {
         this.samplePerson = value;
         binder.readBean(this.samplePerson);
-
     }
 }
