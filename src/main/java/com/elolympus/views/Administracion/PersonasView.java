@@ -69,6 +69,7 @@ public class PersonasView extends PersonasUI implements BeforeEnterObserver {
             refreshGrid();
             Notification.show("Datos actualizados");
             UI.getCurrent().navigate(PersonasView.class);
+            onRefresh();
         } catch (ObjectOptimisticLockingFailureException exception) {
             Notification n = Notification.show(
                     "Error al actualizar los datos. Alguien más actualizó el registro mientras usted hacía cambios.");
@@ -91,7 +92,7 @@ public class PersonasView extends PersonasUI implements BeforeEnterObserver {
             UI.getCurrent().navigate(String.format(this.PERSONA_EDIT_ROUTE_TEMPLATE, persona.getId()));
         } else {
             clearForm();
-            UI.getCurrent().navigate(EditarTablaView.class);
+            UI.getCurrent().navigate(PersonasView.class);
         }
     }
 

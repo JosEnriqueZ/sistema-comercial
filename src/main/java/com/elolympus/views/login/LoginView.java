@@ -35,6 +35,7 @@ public class LoginView extends Div implements BeforeEnterObserver {
         i18nForm.setForgotPassword("Olvidaste tu contraseña?");
         i18n.setForm(i18nForm);
 
+
         LoginI18n.ErrorMessage i18nErrorMessage = i18n.getErrorMessage();
         i18nErrorMessage.setTitle("Nombre de usuario o contraseña incorrectos");
         i18nErrorMessage.setMessage(

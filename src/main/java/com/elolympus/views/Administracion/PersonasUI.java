@@ -35,7 +35,7 @@ import java.util.List;
 public abstract class PersonasUI extends VerticalLayout {
 
     public final String PERSONA_ID = "PersonaID";
-    public final String PERSONA_EDIT_ROUTE_TEMPLATE = "master-detail/%s/edit";
+    public final String PERSONA_EDIT_ROUTE_TEMPLATE = "persona/%s/edit";
     public List<Persona> listPersonas       = new ArrayList();
     public Grid<Persona> gridPersonas       = new Grid<>(Persona.class,false);
     public final TextField txtDni           = new TextField("DNI","","Busqueda por DNI");
@@ -55,6 +55,8 @@ public abstract class PersonasUI extends VerticalLayout {
     public TextField creador           = new TextField("Creador", "");
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
+    private final Button delete = new Button("Eliminar",VaadinIcon.TRASH.create());
+
 
     public final SplitLayout splitLayout = new SplitLayout();
     public final VerticalLayout VL          = new VerticalLayout();
@@ -97,6 +99,7 @@ public abstract class PersonasUI extends VerticalLayout {
 
     public void initStyles(){
         //gridPersonas.setSizeFull();
+        this.delete.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
         tophl.setAlignItems(Alignment.CENTER);
         this.VL.setSizeFull();
         this.HL.setSizeFull();
@@ -120,7 +123,7 @@ public abstract class PersonasUI extends VerticalLayout {
         HorizontalLayout buttonLayout = new HorizontalLayout();
         cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonLayout.add(save, cancel);
+        buttonLayout.add(save, cancel,delete);
         //this.getStyle().set("background","red");
         editorLayoutDiv.add(buttonLayout);
     }

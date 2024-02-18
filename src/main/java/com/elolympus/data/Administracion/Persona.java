@@ -2,6 +2,10 @@ package com.elolympus.data.Administracion;
 
 import com.elolympus.data.AbstractEntity;
 import com.elolympus.security.AuthenticatedUser;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import jakarta.persistence.*;
 
 import java.io.PrintStream;
@@ -52,6 +56,7 @@ public class Persona extends AbstractEntity {
         this.num_documento = num_documento;
         this.email = email;
         this.celular = celular;
+
     }
 
     @PrePersist
@@ -177,4 +182,5 @@ public class Persona extends AbstractEntity {
     public void setCelular(Integer celular) {
         this.celular = celular;
     }
+
 }
