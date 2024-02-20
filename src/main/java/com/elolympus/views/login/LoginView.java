@@ -1,10 +1,14 @@
 package com.elolympus.views.login;
 
 import com.elolympus.security.AuthenticatedUser;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.login.LoginOverlay;
+import com.vaadin.flow.component.dependency.JsModule;
+import com.vaadin.flow.component.page.Page;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
@@ -21,6 +25,7 @@ public class LoginView extends Div implements BeforeEnterObserver {
 
     private final AuthenticatedUser authenticatedUser;
     private final LoginForm lf;
+    private final Checkbox rememberMe = new Checkbox("Recuérdame");
 
     public LoginView(AuthenticatedUser authenticatedUser) {
         this.authenticatedUser = authenticatedUser;

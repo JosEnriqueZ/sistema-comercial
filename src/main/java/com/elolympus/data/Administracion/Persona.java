@@ -154,12 +154,12 @@ public class Persona extends AbstractEntity {
         this.tipo_documento = tipo_documento;
     }
 
-    public Integer getNum_documento() {
-        return num_documento;
+    public String getNum_documento() {
+        return num_documento.toString();
     }
 
-    public void setNum_documento(Integer num_documento) {
-        this.num_documento = num_documento;
+    public void setNum_documento(String num_documento) {
+        this.num_documento= Integer.parseInt(num_documento);
     }
 
     public String getEmail() {
@@ -170,11 +170,11 @@ public class Persona extends AbstractEntity {
         this.email = email;
     }
 
-    public Integer getCelular() {
-        return celular;
+    public String getCelular() {
+        return celular.toString();
     }
 
-    public void setCelular(Integer celular) {
-        this.celular = celular;
+    public void setCelular(String celular) {
+        this.celular= Integer.parseInt(celular);
     }
 }
