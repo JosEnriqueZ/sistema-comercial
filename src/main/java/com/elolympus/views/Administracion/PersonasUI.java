@@ -14,13 +14,17 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
+import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.function.SerializableBiConsumer;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -35,7 +39,7 @@ import java.util.List;
 public abstract class PersonasUI extends VerticalLayout {
 
     public final String PERSONA_ID = "PersonaID";
-    public final String PERSONA_EDIT_ROUTE_TEMPLATE = "master-detail/%s/edit";
+    public final String PERSONA_EDIT_ROUTE_TEMPLATE = "persona/%s/edit";
     public List<Persona> listPersonas       = new ArrayList();
     public Grid<Persona> gridPersonas       = new Grid<>(Persona.class,false);
     public final TextField txtDni           = new TextField("DNI","","Busqueda por DNI");
@@ -55,6 +59,8 @@ public abstract class PersonasUI extends VerticalLayout {
     public TextField creador           = new TextField("Creador", "");
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
+    private final Button delete = new Button("Eliminar",VaadinIcon.TRASH.create());
+
 
     public final SplitLayout splitLayout = new SplitLayout();
     public final VerticalLayout VL          = new VerticalLayout();
@@ -74,7 +80,7 @@ public abstract class PersonasUI extends VerticalLayout {
         //getHeader().add(getToolBar());
         //getBody().
 
-        gridPersonas.addColumn(Persona::getActivo)          .setHeader("Activo")       .setAutoWidth(true);
+        gridPersonas.addColumn(CrearComponmenteActivoRenderer())          .setHeader("Activo")       .setAutoWidth(true);
         gridPersonas.addColumn(Persona::getNum_documento)   .setHeader("DNI")          .setAutoWidth(true);
         gridPersonas.addColumn(Persona::getApellidos)       .setHeader("Apellidos")    .setAutoWidth(true);
         gridPersonas.addColumn(Persona::getNombres)         .setHeader("Nombres")      .setAutoWidth(true);
@@ -92,16 +98,32 @@ public abstract class PersonasUI extends VerticalLayout {
 
         save.addClickListener(e->onBtnSave());
         cancel.addClickListener(e->onBtnCancel());
+        delete.addClickListener(e->onBtnDelete());
         gridPersonas.asSingleSelect().addValueChangeListener(e->asSingleSelect(e.getValue()));
     }
 
     public void initStyles(){
         //gridPersonas.setSizeFull();
+        this.delete.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
         tophl.setAlignItems(Alignment.CENTER);
         this.VL.setSizeFull();
         this.HL.setSizeFull();
+/*        Div celularPrefijo = new Div();
+        celularPrefijo.setText("(+51)");
+        celular.setPrefixComponent(celularPrefijo);*/
     }
 
+    private static final SerializableBiConsumer<Span, Persona> EstadoComponenteActivo = (
+            span, persona) -> {
+        String theme = String.format("badge %s",
+                persona.getActivo() ? "success" : "error");
+        span.getElement().setAttribute("theme", theme);
+        span.setText(persona.getActivo()?"Activo":"Desactivado");
+    };
+
+    private static ComponentRenderer<Span, Persona> CrearComponmenteActivoRenderer() {
+        return new ComponentRenderer<>(Span::new, EstadoComponenteActivo);
+    }
     private void createEditorLayout(SplitLayout splitLayout) {
         Div editorLayoutDiv = new Div();
         //editorLayoutDiv.setClassName("editor-layout");
@@ -120,16 +142,16 @@ public abstract class PersonasUI extends VerticalLayout {
         HorizontalLayout buttonLayout = new HorizontalLayout();
         cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonLayout.add(save, cancel);
+        buttonLayout.add(save, cancel,delete);
         //this.getStyle().set("background","red");
         editorLayoutDiv.add(buttonLayout);
     }
 
     public abstract void onBtnFiltrar();
     public abstract void onRefresh();
-
     public abstract void onBtnSave();
     public abstract void onBtnCancel();
+    public abstract void onBtnDelete();
     public abstract void asSingleSelect(Persona e);
 
 

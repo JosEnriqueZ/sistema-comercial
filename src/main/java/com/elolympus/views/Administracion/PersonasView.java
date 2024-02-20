@@ -69,6 +69,7 @@ public class PersonasView extends PersonasUI implements BeforeEnterObserver {
             refreshGrid();
             Notification.show("Datos actualizados");
             UI.getCurrent().navigate(PersonasView.class);
+            onRefresh();
         } catch (ObjectOptimisticLockingFailureException exception) {
             Notification n = Notification.show(
                     "Error al actualizar los datos. Alguien más actualizó el registro mientras usted hacía cambios.");
@@ -86,12 +87,36 @@ public class PersonasView extends PersonasUI implements BeforeEnterObserver {
     }
 
     @Override
+    public void onBtnDelete() {
+        try {
+            if (this.persona == null) {
+                this.persona = new Persona();
+            }else{this.persona.setActivo(false);}
+
+            binder.writeBean(this.persona);
+            PersonaService.update(this.persona);
+            clearForm();
+            refreshGrid();
+            Notification.show("Persona Eliminada");
+            UI.getCurrent().navigate(PersonasView.class);
+            onRefresh();
+        } catch (ObjectOptimisticLockingFailureException exception) {
+            Notification n = Notification.show(
+                    "Error al Eliminar. Alguien más actualizó el registro mientras usted hacía cambios.");
+            n.setPosition(Notification.Position.MIDDLE);
+            n.addThemeVariants(NotificationVariant.LUMO_ERROR);
+        } catch (ValidationException validationException) {
+            Notification.show("No se pudo Eliminar a la persona. Compruebe nuevamente.");
+        }
+    }
+
+    @Override
     public void asSingleSelect(Persona persona) {
         if (persona != null) {
             UI.getCurrent().navigate(String.format(this.PERSONA_EDIT_ROUTE_TEMPLATE, persona.getId()));
         } else {
             clearForm();
-            UI.getCurrent().navigate(EditarTablaView.class);
+            UI.getCurrent().navigate(PersonasView.class);
         }
     }
 
