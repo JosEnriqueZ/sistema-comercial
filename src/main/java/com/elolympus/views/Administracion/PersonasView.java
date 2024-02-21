@@ -51,8 +51,11 @@ public class PersonasView extends PersonasUI implements BeforeEnterObserver {
         String nombres = txtNombres.getValue();
         listPersonas.clear();
         //listPersonas.addAll(Services.getAlumno().listByCicloActual(ciclo.id,dni,apellidos,nombres));
-        gridPersonas.setItems(query -> PersonaService.list(
-                PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query))).stream());
+        gridPersonas.setItems(query -> PersonaService.obtenerPersonasActivas(
+                PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query))
+        ).stream());
+        //gridPersonas.setItems(query -> PersonaService.list(
+        //        PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query))).stream());
         gridPersonas.getDataProvider().refreshAll();
 
     }

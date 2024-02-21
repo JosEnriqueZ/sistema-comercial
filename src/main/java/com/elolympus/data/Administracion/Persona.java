@@ -37,13 +37,13 @@ public class Persona extends AbstractEntity {
 
     //int 1-DNI 2-RUC 3-CARNET-EXTREANJERA
     @Column(name = "tipo_documento", length = 1, nullable = false)
-    private int tipo_documento;
+    private Integer tipo_documento;
     @Column(name = "num_documento", length = 30, nullable = false)
-    private int num_documento;
+    private Integer num_documento;
     @Column(name = "email", length = 250, nullable = false)
     private String email;
     @Column(name = "celular", length = 15, nullable = false)
-    private int celular;
+    private Integer celular;
 
     public Persona() {
     }
