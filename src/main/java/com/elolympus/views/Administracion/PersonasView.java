@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -41,7 +42,11 @@ public class PersonasView extends PersonasUI implements BeforeEnterObserver {
 
     @Override
     public void onBtnFiltrar() {
-
+        String nombres = txtNombres.getValue();
+        String apellidos = txtApellidos.getValue();
+        List<Persona> resultados = PersonaService.buscarPorNombresYApellidos(nombres, apellidos);
+        // Actualiza tu grid o lista de personas con los resultados
+        gridPersonas.setItems(resultados);
     }
 
     @Override
@@ -49,7 +54,7 @@ public class PersonasView extends PersonasUI implements BeforeEnterObserver {
         String dni = txtDni.getValue();
         String apellidos = txtApellidos.getValue();
         String nombres = txtNombres.getValue();
-        listPersonas.clear();
+        //listPersonas.clear();
         //listPersonas.addAll(Services.getAlumno().listByCicloActual(ciclo.id,dni,apellidos,nombres));
         gridPersonas.setItems(query -> PersonaService.list(
                 PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query))).stream());
