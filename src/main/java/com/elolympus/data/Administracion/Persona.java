@@ -1,15 +1,7 @@
 package com.elolympus.data.Administracion;
 
 import com.elolympus.data.AbstractEntity;
-import com.elolympus.security.AuthenticatedUser;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import jakarta.persistence.*;
-
-import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -160,7 +152,8 @@ public class Persona extends AbstractEntity {
     }
 
     public String getNum_documento() {
-        return num_documento.toString();
+        String NumeroStr = String.valueOf(this.num_documento);
+        return NumeroStr;
     }
 
     public void setNum_documento(String num_documento) {
@@ -176,7 +169,8 @@ public class Persona extends AbstractEntity {
     }
 
     public String getCelular() {
-        return celular.toString();
+        String celularStr = String.valueOf(this.celular);
+        return celularStr;
     }
 
     public void setCelular(String celular) {

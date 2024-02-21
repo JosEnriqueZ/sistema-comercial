@@ -4,6 +4,7 @@ import com.elolympus.component.grid;
 import com.elolympus.data.Administracion.Persona;
 import com.elolympus.data.SamplePerson;
 import com.elolympus.views.MainLayout;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.HasValue.ValueChangeEvent;
 import com.vaadin.flow.component.Key;
@@ -40,7 +41,7 @@ public abstract class PersonasUI extends VerticalLayout {
 
     public final String PERSONA_ID = "PersonaID";
     public final String PERSONA_EDIT_ROUTE_TEMPLATE = "persona/%s/edit";
-    public List<Persona> listPersonas       = new ArrayList();
+//    public List<Persona> listPersonas       = new ArrayList();
     public Grid<Persona> gridPersonas       = new Grid<>(Persona.class,false);
     public final TextField txtDni           = new TextField("DNI","","Busqueda por DNI");
     public final TextField txtNombres       = new TextField("Nombres","","Busqueda por Nombres");
@@ -66,7 +67,6 @@ public abstract class PersonasUI extends VerticalLayout {
     public final VerticalLayout VL          = new VerticalLayout();
     public final HorizontalLayout HL        = new HorizontalLayout();
 
-
     public PersonasUI() {
 
         //addClassNames("editar-tabla-view");
@@ -80,11 +80,7 @@ public abstract class PersonasUI extends VerticalLayout {
         //getHeader().add(getToolBar());
         //getBody().
 
-        gridPersonas.addColumn(CrearComponmenteActivoRenderer())          .setHeader("Activo")       .setAutoWidth(true);
-        gridPersonas.addColumn(Persona::getNum_documento)   .setHeader("DNI")          .setAutoWidth(true);
-        gridPersonas.addColumn(Persona::getApellidos)       .setHeader("Apellidos")    .setAutoWidth(true);
-        gridPersonas.addColumn(Persona::getNombres)         .setHeader("Nombres")      .setAutoWidth(true);
-        gridPersonas.addColumn(Persona::getCelular)         .setHeader("Ciclo Actual") .setAutoWidth(true);
+        createGrid();
 
         btnFiltrar.addClickListener(e->onBtnFiltrar());
         txtApellidos.addValueChangeListener(e->onBtnFiltrar());
@@ -146,14 +142,21 @@ public abstract class PersonasUI extends VerticalLayout {
         //this.getStyle().set("background","red");
         editorLayoutDiv.add(buttonLayout);
     }
+    private Component createGrid() {
+        gridPersonas = new Grid<>(Persona.class, false);
+        gridPersonas.addColumn(CrearComponmenteActivoRenderer())          .setHeader("Activo")       .setAutoWidth(true);
+        gridPersonas.addColumn(Persona::getNum_documento)   .setHeader("DNI")          .setAutoWidth(true);
+        gridPersonas.addColumn(Persona::getApellidos)       .setHeader("Apellidos")    .setAutoWidth(true);
+        gridPersonas.addColumn(Persona::getNombres)         .setHeader("Nombres")      .setAutoWidth(true);
+        gridPersonas.addColumn(Persona::getCelular)         .setHeader("Ciclo Actual") .setAutoWidth(true);
 
+        return gridPersonas;
+    }
     public abstract void onBtnFiltrar();
     public abstract void onRefresh();
     public abstract void onBtnSave();
     public abstract void onBtnCancel();
     public abstract void onBtnDelete();
     public abstract void asSingleSelect(Persona e);
-
-
 }
 
