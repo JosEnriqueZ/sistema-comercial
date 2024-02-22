@@ -3,6 +3,7 @@ package com.elolympus.services;
 import com.elolympus.data.Administracion.Persona;
 import com.elolympus.data.Administracion.PersonaRepository;
 
+import com.elolympus.data.Administracion.PersonaSpecifications;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -37,6 +38,18 @@ public class PersonaService {
 
     public List<Persona> buscarPorNombresYApellidos(String nombres, String apellidos) {
         return repository.findByNombresContainingAndApellidosContaining(nombres, apellidos);
+    }
+
+    public List<Persona> buscarPorNombresYApellidosActivos(String nombres, String apellidos) {
+        return repository.findAll(PersonaSpecifications.nombresApellidosContainsIgnoreCase(nombres, apellidos));
+    }
+    public List<Persona> buscarPorDni(String num_documento) {
+        Specification<Persona> spec = PersonaSpecifications.num_documentoContainsIgnoreCase(num_documento);
+        return repository.findAll(spec);
+    }
+
+    public List<Persona> obtenerPersonasActivas() {
+        return repository.findByActivoTrue();
     }
 
 }

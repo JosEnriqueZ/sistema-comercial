@@ -1,28 +1,19 @@
 package com.elolympus.views.Administracion;
 
-import com.elolympus.component.grid;
 import com.elolympus.data.Administracion.Persona;
-import com.elolympus.data.SamplePerson;
 import com.elolympus.views.MainLayout;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.HasValue;
-import com.vaadin.flow.component.HasValue.ValueChangeEvent;
-import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.checkbox.Checkbox;
-import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
-import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.function.SerializableBiConsumer;
@@ -31,13 +22,10 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @PageTitle("Personas")
 @Route(value = "persona/:PersonaID?/:action?(edit)", layout = MainLayout.class)
 @PermitAll
-public abstract class PersonasUI extends VerticalLayout {
+public abstract class PersonasUI extends Div {
 
     public final String PERSONA_ID = "PersonaID";
     public final String PERSONA_EDIT_ROUTE_TEMPLATE = "persona/%s/edit";
@@ -49,7 +37,7 @@ public abstract class PersonasUI extends VerticalLayout {
     public final Button btnFiltrar          = new Button("BUSCAR",new Icon(VaadinIcon.FILTER));
     public final HorizontalLayout tophl     = new HorizontalLayout(txtDni,txtNombres,txtApellidos,btnFiltrar);
 
-    public final FormLayout formLayout = new FormLayout();
+    public FormLayout formLayout = new FormLayout();
     public TextField nombres           = new TextField("Nombres","");
     public TextField apellidos         = new TextField("Apellidos","");
     public TextField tipo_documento    = new TextField("Tipo de Documento","");
@@ -69,45 +57,48 @@ public abstract class PersonasUI extends VerticalLayout {
 
     public PersonasUI() {
 
-        //addClassNames("editar-tabla-view");
+        addClassNames("persona-view");
         // Create UI
-
+        this.createGridLayout(splitLayout);
         this.createEditorLayout(splitLayout);
-
+        add(splitLayout);
         //gridPersonas.setItems(listPersonas);
 
         //getToolBar().add(getBtnAdd(),getBtnEdit(),getBtnRefresh());
         //getHeader().add(getToolBar());
         //getBody().
 
-        createGrid();
+        //createGrid();
 
         btnFiltrar.addClickListener(e->onBtnFiltrar());
         txtApellidos.addValueChangeListener(e->onBtnFiltrar());
         txtNombres.addValueChangeListener(e->onBtnFiltrar());
         txtDni.addValueChangeListener(e->onBtnFiltrar());
 
-        initStyles();
-        this.VL.add(tophl,gridPersonas);
-        this.HL.add(VL,splitLayout);
-        this.add(HL);
+//        initStyles();
+//        this.VL.add(tophl,gridPersonas);
+//        this.HL.add(VL);
 
+//        this.add(HL);
         save.addClickListener(e->onBtnSave());
         cancel.addClickListener(e->onBtnCancel());
         delete.addClickListener(e->onBtnDelete());
-        gridPersonas.asSingleSelect().addValueChangeListener(e->asSingleSelect(e.getValue()));
+        gridPersonas.asSingleSelect().addValueChangeListener(e->asSingleSelect(e.getValue(),this.save));
     }
 
-    public void initStyles(){
-        //gridPersonas.setSizeFull();
-        this.delete.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
-        tophl.setAlignItems(Alignment.CENTER);
-        this.VL.setSizeFull();
-        this.HL.setSizeFull();
-/*        Div celularPrefijo = new Div();
-        celularPrefijo.setText("(+51)");
-        celular.setPrefixComponent(celularPrefijo);*/
-    }
+//    public void initStyles(){
+//        //gridPersonas.setSizeFull();
+//        this.delete.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
+//        //tophl.setAlignItems(Alignment.CENTER);
+//        this.splitLayout.setSizeFull();
+//
+//        this.HL.expand(splitLayout);
+//        this.VL.setSizeFull();
+//        this.HL.setSizeFull();
+///*        Div celularPrefijo = new Div();
+//        celularPrefijo.setText("(+51)");
+//        celular.setPrefixComponent(celularPrefijo);*/
+//    }
 
     private static final SerializableBiConsumer<Span, Persona> EstadoComponenteActivo = (
             span, persona) -> {
@@ -121,13 +112,16 @@ public abstract class PersonasUI extends VerticalLayout {
         return new ComponentRenderer<>(Span::new, EstadoComponenteActivo);
     }
     private void createEditorLayout(SplitLayout splitLayout) {
-        Div editorLayoutDiv = new Div();
-        //editorLayoutDiv.setClassName("editor-layout");
 
+        Div editorLayoutDiv = new Div();
+        editorLayoutDiv.setClassName("editor-layout");
+        this.delete.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
         Div editorDiv = new Div();
-       // editorDiv.setClassName("editor");
+        editorDiv.setClassName("editor");
         editorLayoutDiv.add(editorDiv);
-        formLayout.add(nombres, apellidos, tipo_documento, num_documento, celular, email, sexo, creador);
+        formLayout.add(nombres, apellidos,
+                tipo_documento, num_documento, celular,
+                email, sexo, creador);
         editorDiv.add(formLayout);
         createButtonLayout(editorLayoutDiv);
 
@@ -136,6 +130,7 @@ public abstract class PersonasUI extends VerticalLayout {
 
     private void createButtonLayout(Div editorLayoutDiv) {
         HorizontalLayout buttonLayout = new HorizontalLayout();
+        buttonLayout.setClassName("button-layout");
         cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonLayout.add(save, cancel,delete);
@@ -144,19 +139,28 @@ public abstract class PersonasUI extends VerticalLayout {
     }
     private Component createGrid() {
         gridPersonas = new Grid<>(Persona.class, false);
+        gridPersonas.setClassName("grilla");
         gridPersonas.addColumn(CrearComponmenteActivoRenderer())          .setHeader("Activo")       .setAutoWidth(true);
         gridPersonas.addColumn(Persona::getNum_documento)   .setHeader("DNI")          .setAutoWidth(true);
         gridPersonas.addColumn(Persona::getApellidos)       .setHeader("Apellidos")    .setAutoWidth(true);
         gridPersonas.addColumn(Persona::getNombres)         .setHeader("Nombres")      .setAutoWidth(true);
-        gridPersonas.addColumn(Persona::getCelular)         .setHeader("Ciclo Actual") .setAutoWidth(true);
+        gridPersonas.addColumn(Persona::getCelular)         .setHeader("Celular") .setAutoWidth(true);
 
         return gridPersonas;
+    }
+    private void createGridLayout(SplitLayout splitLayout) {
+        Div wrapper = new Div();
+        wrapper.setClassName("grid-wrapper");
+        tophl.setClassName("search");
+        wrapper.setSizeFull();
+        splitLayout.addToPrimary(wrapper);
+        wrapper.add(tophl,createGrid());
     }
     public abstract void onBtnFiltrar();
     public abstract void onRefresh();
     public abstract void onBtnSave();
     public abstract void onBtnCancel();
     public abstract void onBtnDelete();
-    public abstract void asSingleSelect(Persona e);
+    public abstract void asSingleSelect(Persona e,Button btnSave);
 }
 
