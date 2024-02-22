@@ -36,10 +36,6 @@ public class PersonaService {
         return repository.findById(id);
     }
 
-    public List<Persona> buscarPorNombresYApellidos(String nombres, String apellidos) {
-        return repository.findByNombresContainingAndApellidosContaining(nombres, apellidos);
-    }
-
     public List<Persona> buscarPorNombresYApellidosActivos(String nombres, String apellidos) {
         return repository.findAll(PersonaSpecifications.nombresApellidosContainsIgnoreCase(nombres, apellidos));
     }
@@ -49,7 +45,12 @@ public class PersonaService {
     }
 
     public List<Persona> obtenerPersonasActivas() {
-        return repository.findByActivoTrue();
+        return repository.findAll();
+    }
+
+    public List<Persona> numDocumnetoNombresApellidosActivosContainsIgnoreCase(String num_documento, String nombres, String apellidos){
+        Specification<Persona> spec = PersonaSpecifications.numDocumnetoNombresApellidosActivosContainsIgnoreCase(num_documento,nombres,apellidos);
+        return repository.findAll(spec);
     }
 
 }

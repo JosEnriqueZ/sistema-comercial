@@ -3,6 +3,7 @@ package com.elolympus.views;
 import com.elolympus.data.User;
 import com.elolympus.security.AuthenticatedUser;
 import com.elolympus.views.Administracion.PersonasView;
+import com.elolympus.views.Administracion.PersonasView2;
 import com.elolympus.views.Administracion.RolesView;
 import com.elolympus.views.Administracion.UsuariosView;
 import com.elolympus.views.Logistica.AlmacenView;
@@ -46,7 +47,6 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 import java.io.ByteArrayInputStream;
 import java.util.Optional;
 
-import org.jsoup.select.Evaluator;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
 /**

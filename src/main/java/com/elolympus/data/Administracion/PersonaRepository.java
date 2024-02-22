@@ -13,10 +13,4 @@ import java.util.List;
 public interface PersonaRepository  extends
         JpaRepository<Persona, Long>,
         JpaSpecificationExecutor<Persona> {
-    List<Persona> findByNombresContainingAndApellidosContaining(String nombres, String apellidos);
-    //List<Persona> findByNombresContainingAndApellidosContainingAndActivoTrue(String nombres, String apellidos);
-
-//    @Query("SELECT p FROM Persona p WHERE LOWER(p.nombres) LIKE LOWER(:nombres) AND LOWER(p.apellidos) LIKE LOWER(:apellidos) AND p.activo = true")
-//    List<Persona> findByNombresAndApellidosIgnoreCaseAndActivoTrue(@Param("nombres") String nombres, @Param("apellidos") String apellidos);
-    List<Persona> findByActivoTrue();
 }
