@@ -61,6 +61,7 @@ public abstract class PersonasUI extends Div {
         // Create UI
         this.createGridLayout(splitLayout);
         this.createEditorLayout(splitLayout);
+        splitLayout.setSizeFull();
         add(splitLayout);
         //gridPersonas.setItems(listPersonas);
 
@@ -114,6 +115,7 @@ public abstract class PersonasUI extends Div {
     private void createEditorLayout(SplitLayout splitLayout) {
 
         Div editorLayoutDiv = new Div();
+        editorLayoutDiv.setHeightFull();
         editorLayoutDiv.setClassName("editor-layout");
         this.delete.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
         Div editorDiv = new Div();
