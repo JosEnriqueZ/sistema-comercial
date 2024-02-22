@@ -26,3 +26,30 @@
 .login-rich-content vaadin-login-form-wrapper {
   background-image: none;
 }
+/*estilos persona*/
+.tophl {
+  align-content: center;
+  width: auto;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+  align-items: center;
+}
+/* Estilo por defecto para pantallas grandes */
+.toggle-button {
+  display: none; /* Ocultar el botón en pantallas grandes */
+}
+/* Estilos para pantallas pequeñas */
+@media (max-width: 480px) {
+  .toggle-button {
+    display: block; /* Mostrar el botón en pantallas pequeñas */
+  }
+  .tophl {
+    display: none; /* Ocultar tophl inicialmente en pantallas pequeñas */
+  }
+  .tophl-visible {
+    display: block; /* O 'flex', dependiendo de tu layout */
+  }
+
+}
+

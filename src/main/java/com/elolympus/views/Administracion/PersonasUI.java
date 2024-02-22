@@ -49,7 +49,7 @@ public abstract class PersonasUI extends Div {
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
     private final Button delete = new Button("Eliminar",VaadinIcon.TRASH.create());
-
+    Button toggleButton = new Button("Busqueda", new Icon(VaadinIcon.FILTER));
 
     public final SplitLayout splitLayout = new SplitLayout();
     public final VerticalLayout VL          = new VerticalLayout();
@@ -62,6 +62,8 @@ public abstract class PersonasUI extends Div {
         this.createGridLayout(splitLayout);
         this.createEditorLayout(splitLayout);
         splitLayout.setSizeFull();
+        toggleButton.addClassName("toggle-button");
+        tophl.addClassName("tophl");
         add(splitLayout);
         //gridPersonas.setItems(listPersonas);
 
@@ -81,6 +83,16 @@ public abstract class PersonasUI extends Div {
 //        this.HL.add(VL);
 
 //        this.add(HL);
+        toggleButton.addClickListener(event -> {
+            boolean isVisible = tophl.isVisible();
+            tophl.setVisible(!isVisible);
+            if (isVisible) {
+                tophl.removeClassName("tophl-visible");
+            } else {
+                tophl.addClassName("tophl-visible");
+            }
+        });
+
         save.addClickListener(e->onBtnSave());
         cancel.addClickListener(e->onBtnCancel());
         delete.addClickListener(e->onBtnDelete());
@@ -142,6 +154,7 @@ public abstract class PersonasUI extends Div {
     private Component createGrid() {
         gridPersonas = new Grid<>(Persona.class, false);
         gridPersonas.setClassName("grilla");
+        gridPersonas.setHeight("87%");
         gridPersonas.addColumn(CrearComponmenteActivoRenderer())          .setHeader("Activo")       .setAutoWidth(true);
         gridPersonas.addColumn(Persona::getNum_documento)   .setHeader("DNI")          .setAutoWidth(true);
         gridPersonas.addColumn(Persona::getApellidos)       .setHeader("Apellidos")    .setAutoWidth(true);
@@ -153,10 +166,10 @@ public abstract class PersonasUI extends Div {
     private void createGridLayout(SplitLayout splitLayout) {
         Div wrapper = new Div();
         wrapper.setClassName("grid-wrapper");
-        tophl.setClassName("search");
+        //tophl.setClassName("search");
         wrapper.setSizeFull();
         splitLayout.addToPrimary(wrapper);
-        wrapper.add(tophl,createGrid());
+        wrapper.add(toggleButton,tophl,createGrid());
     }
     public abstract void onBtnFiltrar();
     public abstract void onRefresh();
