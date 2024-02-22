@@ -1,11 +1,14 @@
+@import "theme-editor.css";
 @import url('./main-layout.css');
 @import url('./views/grillaporsifunciona-view.css');
 @import url('./views/reportes-view.css');
+@import url('./views/persona-view.css');
 @import url('./views/editar-tabla-view.css');
 @import url('./views/colaboracion-view.css');
 @import url('./views/form-credit-card-view.css');
 @import url('./views/chat-e-view.css');
 @import url('./views/galeria-imagenes-view.css');
+
 
 
 .login-rich-content {

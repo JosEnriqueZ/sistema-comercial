@@ -6,6 +6,7 @@ import com.elolympus.services.PersonaService;
 import com.elolympus.views.editartabla.EditarTablaView;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
@@ -42,11 +43,19 @@ public class PersonasView extends PersonasUI implements BeforeEnterObserver {
 
     @Override
     public void onBtnFiltrar() {
-        String nombres = txtNombres.getValue();
-        String apellidos = txtApellidos.getValue();
-        List<Persona> resultados = PersonaService.buscarPorNombresYApellidos(nombres, apellidos);
-        // Actualiza tu grid o lista de personas con los resultados
-        gridPersonas.setItems(resultados);
+        if (!txtNombres.isEmpty() || !txtApellidos.isEmpty()){
+            String nombres = txtNombres.getValue();
+            String apellidos = txtApellidos.getValue();
+            List<Persona> resultados = PersonaService.buscarPorNombresYApellidosActivos(nombres, apellidos);
+            // Actualiza tu grid o lista de personas con los resultados
+            gridPersonas.setItems(resultados);
+        }
+        if (!txtDni.isEmpty()){
+            String num_documento = txtDni.getValue();
+            List<Persona> resultados = PersonaService.buscarPorDni(num_documento);
+            gridPersonas.setItems(resultados);
+        }
+
     }
 
     @Override
@@ -56,12 +65,11 @@ public class PersonasView extends PersonasUI implements BeforeEnterObserver {
         String nombres = txtNombres.getValue();
         //listPersonas.clear();
         //listPersonas.addAll(Services.getAlumno().listByCicloActual(ciclo.id,dni,apellidos,nombres));
-        gridPersonas.setItems(query -> PersonaService.obtenerPersonasActivas(
-                PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query))
-        ).stream());
-        //gridPersonas.setItems(query -> PersonaService.list(
-        //        PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query))).stream());
-        gridPersonas.getDataProvider().refreshAll();
+        List<Persona> personasActivas = PersonaService.obtenerPersonasActivas();
+        gridPersonas.setItems(personasActivas);
+//        gridPersonas.setItems(query -> PersonaService.list(
+//                PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query))).stream());
+//        gridPersonas.getDataProvider().refreshAll();
 
     }
 
@@ -119,18 +127,22 @@ public class PersonasView extends PersonasUI implements BeforeEnterObserver {
     }
 
     @Override
-    public void asSingleSelect(Persona persona) {
+    public void asSingleSelect(Persona persona, Button btnSave) {
         if (persona != null) {
+            btnSave.setText("Actualizar");
             UI.getCurrent().navigate(String.format(this.PERSONA_EDIT_ROUTE_TEMPLATE, persona.getId()));
         } else {
             clearForm();
             UI.getCurrent().navigate(PersonasView.class);
+            btnSave.setText("Guardar");
         }
     }
 
     private void refreshGrid() {
         gridPersonas.select(null);
-        gridPersonas.getDataProvider().refreshAll();
+        List<Persona> personasActivas = PersonaService.obtenerPersonasActivas();
+        gridPersonas.setItems(personasActivas);
+        //gridPersonas.getDataProvider().refreshAll();
     }
 
     private void clearForm() {
