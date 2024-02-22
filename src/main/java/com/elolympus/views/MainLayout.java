@@ -181,11 +181,6 @@ public class MainLayout extends AppLayout {
                     LineAwesomeIcon.TH_LIST_SOLID.create()));
 
         }
-        if (accessChecker.hasAccess(GaleriaImagenesView.class)) {
-            nav.addItem(new SideNavItem("Galeria Imagenes", GaleriaImagenesView.class,
-                    LineAwesomeIcon.TH_LIST_SOLID.create()));
-
-        }
 
         return nav;
     }
@@ -216,7 +211,8 @@ public class MainLayout extends AppLayout {
             div.getElement().getStyle().set("align-items", "center");
             div.getElement().getStyle().set("gap", "var(--lumo-space-s)");
             userName.add(div);
-            userName.getSubMenu().addItem("Sign out", e -> {
+            userName.getSubMenu().addItem("Perfil de Usuario");
+            userName.getSubMenu().addItem("Cerrar Sesion", e -> {
                 authenticatedUser.logout();
             });
 
