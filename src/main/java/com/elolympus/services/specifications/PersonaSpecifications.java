@@ -1,5 +1,6 @@
-package com.elolympus.data.Administracion;
+package com.elolympus.services.specifications;
 
+import com.elolympus.data.Administracion.Persona;
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;

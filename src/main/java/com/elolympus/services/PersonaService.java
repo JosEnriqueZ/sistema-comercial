@@ -1,9 +1,9 @@
 package com.elolympus.services;
 
 import com.elolympus.data.Administracion.Persona;
-import com.elolympus.data.Administracion.PersonaRepository;
+import com.elolympus.services.repository.PersonaRepository;
 
-import com.elolympus.data.Administracion.PersonaSpecifications;
+import com.elolympus.services.specifications.PersonaSpecifications;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

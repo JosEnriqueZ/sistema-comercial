@@ -11,9 +11,6 @@ import java.util.Objects;
 public class Persona extends AbstractEntity {
 
     //public AuthenticatedUser authenticatedUser;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @Column(name = "creado", nullable = false)
     private LocalDateTime creado;
     @Column(name = "creador", length = 200, nullable = false)
@@ -63,20 +60,6 @@ public class Persona extends AbstractEntity {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Persona persona = (Persona) o;
-        return Objects.equals(id, persona.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), id);
-    }
-
-    @Override
     public String toString() {
         return "Persona{" +
                 "apellidos='" + apellidos + '\'' +
@@ -84,15 +67,6 @@ public class Persona extends AbstractEntity {
                 ", tipo_documento=" + tipo_documento +
                 ", num_documento=" + num_documento +
                 '}';
-    }
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public LocalDateTime getCreado() {
