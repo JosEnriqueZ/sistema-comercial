@@ -195,7 +195,7 @@ public class PersonasView extends Div implements BeforeEnterObserver{
             clearForm();
             refreshGrid();
             Notification.show("Datos actualizados");
-            UI.getCurrent().navigate(PersonasView2.class);
+            UI.getCurrent().navigate(PersonasView.class);
         } catch (ObjectOptimisticLockingFailureException exception) {
             Notification n = Notification.show(
                     "Error al actualizar los datos. Alguien más actualizó el registro mientras usted hacía cambios.");
@@ -222,7 +222,7 @@ public class PersonasView extends Div implements BeforeEnterObserver{
             clearForm();
             refreshGrid();
             Notification.show("Persona Eliminada");
-            UI.getCurrent().navigate(PersonasView2.class);
+            UI.getCurrent().navigate(PersonasView.class);
         } catch (ObjectOptimisticLockingFailureException exception) {
             Notification n = Notification.show(
                     "Error al Eliminar. Alguien más actualizó el registro mientras usted hacía cambios.");
@@ -240,7 +240,7 @@ public class PersonasView extends Div implements BeforeEnterObserver{
             UI.getCurrent().navigate(String.format(this.PERSONA_EDIT_ROUTE_TEMPLATE, persona.getId()));
         } else {
             clearForm();
-            UI.getCurrent().navigate(PersonasView2.class);
+            UI.getCurrent().navigate(PersonasView.class);
             btnSave.setText("Guardar");
         }
     }

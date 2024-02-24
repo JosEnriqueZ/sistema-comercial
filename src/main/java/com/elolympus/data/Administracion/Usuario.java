@@ -1,6 +1,7 @@
 package com.elolympus.data.Administracion;
 
 import com.elolympus.data.AbstractEntity;
+import com.elolympus.security.SecurityUtils;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -17,13 +18,14 @@ public class Usuario extends AbstractEntity {
     @Column(name = "activo", nullable = false)
     private Boolean activo;
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    @Column(name = "rol", nullable = false)
+
+    @OneToOne
     private Rol rol;
     @Column(name = "usuario", length = 50, nullable = false)
     private String usuario;
     @Column(name = "password", length = 50, nullable = false)
     private String password;
-    @Column(name = "persona", nullable = false)
+    @OneToOne
     private Persona persona;
 
     public Usuario() {
@@ -41,7 +43,7 @@ public class Usuario extends AbstractEntity {
     public void prePersist() {
         this.creado = LocalDateTime.now();
         try {
-            // this.creador = authenticatedUser.get().get().getUsername();
+            this.creador = SecurityUtils.obtenerNombreUsuarioActual();
         }catch (Exception e){
             System.out.println("ERROR al obtner el usuario: " + e.toString());
         }

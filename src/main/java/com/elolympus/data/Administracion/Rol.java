@@ -1,6 +1,7 @@
 package com.elolympus.data.Administracion;
 
 import com.elolympus.data.AbstractEntity;
+import com.elolympus.security.SecurityUtils;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -25,34 +26,40 @@ public class Rol extends AbstractEntity {
     private String descripcion;
 
     //CRUD
-    @Column(name = "create", nullable = false)
-    private Boolean create;
-    @Column(name = "read", nullable = false)
-    private Boolean read;
-    @Column(name = "update", nullable = false)
-    private Boolean update;
-    @Column(name = "delete", nullable = false)
-    private Boolean delete;
+    @Column(name = "can_create", nullable = false)
+    private Boolean canCreate;
+    @Column(name = "can_read", nullable = false)
+    private Boolean canRead;
+    @Column(name = "can_update", nullable = false)
+    private Boolean canUpdate;
+    @Column(name = "can_delete", nullable = false)
+    private Boolean canDelete;
+
+    @OneToOne
+    @JoinColumn(name="id")
+    private Usuario usuario;
 
     public Rol() {
     }
 
-    public Rol(String creador, String area, String cargo, String descripcion, Boolean create, Boolean read, Boolean update, Boolean delete) {
+    public Rol(LocalDateTime creado, String creador, Boolean activo, String area, String cargo, String descripcion, Boolean canCreate, Boolean canRead, Boolean canUpdate, Boolean canDelete) {
+        this.creado = creado;
         this.creador = creador;
+        this.activo = activo;
         this.area = area;
         this.cargo = cargo;
         this.descripcion = descripcion;
-        this.create = create;
-        this.read = read;
-        this.update = update;
-        this.delete = delete;
+        this.canCreate = canCreate;
+        this.canRead = canRead;
+        this.canUpdate = canUpdate;
+        this.canDelete = canDelete;
     }
 
     @PrePersist
     public void prePersist() {
         this.creado = LocalDateTime.now();
         try {
-            // this.creador = authenticatedUser.get().get().getUsername();
+            this.creador = SecurityUtils.obtenerNombreUsuarioActual();
         }catch (Exception e){
             System.out.println("ERROR al obtner el usuario: " + e.toString());
         }
@@ -62,18 +69,19 @@ public class Rol extends AbstractEntity {
     @Override
     public String toString() {
         return "Rol{" +
-                ", creado=" + creado +
+                "creado=" + creado +
                 ", creador='" + creador + '\'' +
                 ", activo=" + activo +
                 ", area='" + area + '\'' +
                 ", cargo='" + cargo + '\'' +
                 ", descripcion='" + descripcion + '\'' +
-                ", create=" + create +
-                ", read=" + read +
-                ", update=" + update +
-                ", delete=" + delete +
+                ", canCreate=" + canCreate +
+                ", canRead=" + canRead +
+                ", canUpdate=" + canUpdate +
+                ", canDelete=" + canDelete +
                 '}';
     }
+
     public LocalDateTime getCreado() {
         return creado;
     }
@@ -122,35 +130,35 @@ public class Rol extends AbstractEntity {
         this.descripcion = descripcion;
     }
 
-    public Boolean getCreate() {
-        return create;
+    public Boolean getCanCreate() {
+        return canCreate;
     }
 
-    public void setCreate(Boolean create) {
-        this.create = create;
+    public void setCanCreate(Boolean canCreate) {
+        this.canCreate = canCreate;
     }
 
-    public Boolean getRead() {
-        return read;
+    public Boolean getCanRead() {
+        return canRead;
     }
 
-    public void setRead(Boolean read) {
-        this.read = read;
+    public void setCanRead(Boolean canRead) {
+        this.canRead = canRead;
     }
 
-    public Boolean getUpdate() {
-        return update;
+    public Boolean getCanUpdate() {
+        return canUpdate;
     }
 
-    public void setUpdate(Boolean update) {
-        this.update = update;
+    public void setCanUpdate(Boolean canUpdate) {
+        this.canUpdate = canUpdate;
     }
 
-    public Boolean getDelete() {
-        return delete;
+    public Boolean getCanDelete() {
+        return canDelete;
     }
 
-    public void setDelete(Boolean delete) {
-        this.delete = delete;
+    public void setCanDelete(Boolean canDelete) {
+        this.canDelete = canDelete;
     }
 }

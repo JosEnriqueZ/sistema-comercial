@@ -1,7 +1,12 @@
 package com.elolympus.data.Administracion;
 
 import com.elolympus.data.AbstractEntity;
+import com.elolympus.security.AuthenticatedUser;
+import com.elolympus.security.SecurityUtils;
 import jakarta.persistence.*;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
+
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -34,6 +39,10 @@ public class Persona extends AbstractEntity {
     @Column(name = "celular", length = 15, nullable = false)
     private Integer celular;
 
+    @OneToOne
+    @JoinColumn(name = "persona_id") // Ajusta el nombre de la columna según tu esquema
+    private Usuario usuario;
+
     public Persona() {
     }
 
@@ -52,7 +61,7 @@ public class Persona extends AbstractEntity {
     public void prePersist() {
         this.creado = LocalDateTime.now();
         try {
-           // this.creador = authenticatedUser.get().get().getUsername();
+            this.creador = SecurityUtils.obtenerNombreUsuarioActual();
         }catch (Exception e){
             System.out.println("ERROR al obtner el usuario: " + e.toString());
         }
@@ -125,15 +134,6 @@ public class Persona extends AbstractEntity {
         this.tipo_documento = tipo_documento;
     }
 
-    public String getNum_documento() {
-        String NumeroStr = String.valueOf(this.num_documento);
-        return NumeroStr;
-    }
-
-    public void setNum_documento(String num_documento) {
-        this.num_documento= Integer.parseInt(num_documento);
-    }
-
     public String getEmail() {
         return email;
     }
@@ -149,6 +149,13 @@ public class Persona extends AbstractEntity {
 
     public void setCelular(String celular) {
         this.celular= Integer.parseInt(celular);
+    }
+        public void setNum_documento(String num_documento) {
+        this.num_documento= Integer.parseInt(num_documento);
+    }
+    public String getNum_documento() {
+        String NumeroStr = String.valueOf(this.num_documento);
+        return NumeroStr;
     }
 
 }
