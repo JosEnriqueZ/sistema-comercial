@@ -28,6 +28,9 @@ public class PersonaService {
     public int count() {
         return (int) repository.count();
     }
+    public List<Persona> findAll() {
+        return repository.findAll();
+    }
     public Persona update(Persona entity) {
         return repository.save(entity);
     }

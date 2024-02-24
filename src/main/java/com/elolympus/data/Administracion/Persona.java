@@ -158,4 +158,9 @@ public class Persona extends AbstractEntity {
         return NumeroStr;
     }
 
+    // Método para obtener el nombre completo
+    public String getNombreCompleto() {
+        return nombres + " " + apellidos;
+    }
+
 }

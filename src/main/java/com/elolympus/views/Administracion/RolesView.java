@@ -7,11 +7,13 @@ import com.elolympus.views.MainLayout;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -53,7 +55,9 @@ public class RolesView extends Div implements BeforeEnterObserver {
 
     private Button save = new Button("Guardar");
     private Button cancel = new Button("Cancelar");
-    private Button delete = new Button("Eliminar");
+    private Button delete = new Button("Eliminar", VaadinIcon.TRASH.create());
+
+    private FormLayout formLayout = new FormLayout();
 
     private Grid<Rol> grid = new Grid<>(Rol.class);
     @Autowired
@@ -67,13 +71,19 @@ public class RolesView extends Div implements BeforeEnterObserver {
         }catch (Exception e){
             System.out.println("ERRORRRR: " + e.getMessage());
         }
-        //addClassNames("roles-view");
+        addClassNames("roles-view");
+        setSizeFull();
         configureGrid();
         SplitLayout splitLayout = new SplitLayout(createGridLayout(), createEditorLayout());
+        splitLayout.setSizeFull();
         add(splitLayout);
         updateList();
     }
     private void configureGrid() {
+
+        grid = new Grid<>();
+        grid.setClassName("grilla");
+        grid.setHeight("86%");
         grid.addColumn(Rol::getArea).setHeader("Área");
         grid.addColumn(Rol::getCargo).setHeader("Cargo");
         grid.addColumn(Rol::getDescripcion).setHeader("Descripción");
@@ -84,20 +94,39 @@ public class RolesView extends Div implements BeforeEnterObserver {
         grid.asSingleSelect().addValueChangeListener(event -> editRole(event.getValue()));
     }
     private Component createEditorLayout() {
-        FormLayout formLayout = new FormLayout();
+        Div editorDiv = new Div();
+        editorDiv.setHeightFull();
+        editorDiv.setClassName("editor-layout");
+        Div div = new Div();
+        div.setClassName("editor");
+        editorDiv.add(div);
         formLayout.add(area, cargo, descripcion, canCreate, canRead, canUpdate, canDelete);
 
         save.addClickListener(event -> save());
         cancel.addClickListener(event -> clearForm());
         delete.addClickListener(event -> delete());
 
-        binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid()));
+        delete.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
+        cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        return new Div(formLayout, new HorizontalLayout(save, cancel, delete));
+        binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid()));
+        div.add(formLayout);
+        createButtonLayout(editorDiv);
+        return editorDiv;
+    }
+    private void createButtonLayout(Div editorLayoutDiv) {
+        HorizontalLayout buttonLayout = new HorizontalLayout();
+        buttonLayout.setClassName("button-layout");
+        buttonLayout.add(save, cancel,delete);
+        editorLayoutDiv.add(buttonLayout);
     }
 
     private Component createGridLayout() {
         Div wrapper = new Div();
+        wrapper.setClassName("grid-wrapper");
+        wrapper.setSizeFull();
+        wrapper.setHeightFull();
         wrapper.add(grid);
         return wrapper;
     }
