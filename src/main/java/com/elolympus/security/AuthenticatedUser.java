@@ -3,7 +3,9 @@ package com.elolympus.security;
 import com.elolympus.data.Administracion.Usuario;
 import com.elolympus.data.User;
 import com.elolympus.data.UserRepository;
+import com.elolympus.services.UsuarioService;
 import com.elolympus.services.repository.UsuarioRepository;
+import com.elolympus.services.specifications.UsuarioSpecifications;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 import java.util.Optional;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +29,7 @@ public class AuthenticatedUser {
     @Transactional
     public Optional<Usuario> get() {
         return authenticationContext.getAuthenticatedUser(UserDetails.class)
-                .map(userDetails -> usuarioRepository.findByUsuario(userDetails.getUsername()));
+                .flatMap(userDetails -> usuarioRepository.findOne(UsuarioSpecifications.porUsuarioYActivo(userDetails.getUsername())));
     }
 
     public void logout() {

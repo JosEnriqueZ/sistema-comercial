@@ -2,6 +2,7 @@ package com.elolympus.services;
 
 import com.elolympus.data.Administracion.Usuario;
 import com.elolympus.services.repository.UsuarioRepository;
+import com.elolympus.services.specifications.UsuarioSpecifications;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,9 @@ public class UsuarioService {
     // Método para encontrar todos los usuarios
     public List<Usuario> findAll() {
         return repository.findAll();
+    }
+    public List<Usuario> findAllByActivo(Boolean activo) {
+        return repository.findAll(UsuarioSpecifications.conEstadoActivo(true));
     }
 
     // Método para guardar o actualizar un usuario

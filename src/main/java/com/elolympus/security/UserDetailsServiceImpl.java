@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.elolympus.services.repository.UsuarioRepository;
+import com.elolympus.services.specifications.UsuarioSpecifications;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,7 +34,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario user = usuarioRepository.findByUsuario(username);
+//        Usuario user = usuarioRepository.findByUsuario(username);
+        Usuario user = usuarioRepository.findOne(UsuarioSpecifications.porUsuarioYActivo(username)).orElse(null);
         if (user == null) {
             throw new UsernameNotFoundException("No user present with username: " + username);
         } else {

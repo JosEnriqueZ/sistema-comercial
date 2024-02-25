@@ -28,6 +28,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.function.SerializableBiConsumer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -60,6 +61,8 @@ public class UsuariosView extends Div {
     private final Button delete = new Button("Eliminar", VaadinIcon.TRASH.create());
 
     private final FormLayout formLayout = new FormLayout();
+
+    private String Password;
 
     @Autowired
     public UsuariosView(UsuarioService usuarioService, RolService rolService, PersonaService personaService, PasswordUtils passwordUtils) {
@@ -153,6 +156,8 @@ public class UsuariosView extends Div {
     private void setupForm() {
         // Configura los campos del formulario para usarlos con el Binder
         binder.forField(usuarioField)
+                .withValidator(new StringLengthValidator(
+                        "El nombre de usuario debe contener al menos 3 caracteres", 3, null))
                 .bind(Usuario::getUsuario, Usuario::setUsuario);
 
         binder.forField(passwordField)
@@ -189,12 +194,12 @@ public class UsuariosView extends Div {
          binder.forField(personaComboBox).bind(Usuario::getPersona, Usuario::setPersona);
     }
 
-
-
     private void save() {
         try {
-            if (this.usuario == null) {
-                this.usuario = new Usuario(); // Considerar si esto es apropiado para tu lógica de negocio
+            // Verifica si el usuario tiene información válida antes de intentar guardar
+            if (this.usuario == null || (this.usuario.getUsuario().isEmpty() && passwordField.isEmpty())) {
+                Notification.show("No se puede guardar un usuario vacío.");
+                return; // Salir del método si no hay información válida para guardar
             }
             binder.writeBean(this.usuario);
 
@@ -210,6 +215,9 @@ public class UsuariosView extends Div {
                 // Actualización de un usuario existente
                 if (!passwordField.isEmpty()) {
                     this.usuario.setPassword(passwordUtils.encryptPassword(passwordField.getValue()));
+                } else {
+                    // Si el campo de contraseña está vacío, no actualices la contraseña
+                    this.usuario.setPassword(Password);
                 }
                 usuarioService.update(this.usuario); // Asegúrate de que este método exista y haga lo que esperas
             }
@@ -239,7 +247,8 @@ public class UsuariosView extends Div {
 
     private void clearForm() {
         this.usuario = null; // Limpiar la referencia al usuario actual
-        binder.readBean(new Usuario()); // Limpiar los campos del formulario
+        this.usuario = new Usuario(); // Cambio clave aquí
+        binder.readBean(this.usuario); // Ahora `usuario` nunca es null
         save.setText("Guardar"); // Cambiar el texto del botón de vuelta a "Guardar" cuando se limpia el formulario
     }
 
@@ -250,6 +259,7 @@ public class UsuariosView extends Div {
             this.usuario = usuario;
             binder.readBean(this.usuario);
             save.setText("Actualizar"); // Cambiar el texto del botón a "Actualizar"
+            Password = this.usuario.getPassword();
             passwordField.clear(); // Limpiar el campo de contraseña
         }
     }
