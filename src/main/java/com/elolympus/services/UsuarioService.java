@@ -26,6 +26,10 @@ public class UsuarioService {
     }
 
     // Método para guardar o actualizar un usuario
+    public Usuario update(Usuario usuario) {
+        // Aquí puedes añadir lógica antes de guardar el usuario
+        return repository.save(usuario);
+    }
     public Usuario save(Usuario usuario) {
         // Aquí puedes añadir lógica antes de guardar el usuario
         return repository.save(usuario);

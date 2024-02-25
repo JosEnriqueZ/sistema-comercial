@@ -3,11 +3,13 @@ package com.elolympus.views.Administracion;
 import com.elolympus.data.Administracion.Persona;
 import com.elolympus.data.Administracion.Rol;
 import com.elolympus.data.Administracion.Usuario;
+import com.elolympus.security.PasswordUtils;
 import com.elolympus.services.PersonaService;
 import com.elolympus.services.RolService;
 import com.elolympus.services.UsuarioService;
 import com.elolympus.views.MainLayout;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -15,18 +17,23 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
-import com.vaadin.flow.data.validator.StringLengthValidator;
+import com.vaadin.flow.data.binder.ValidationException;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.function.SerializableBiConsumer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 @PageTitle("Usuarios")
 @Route(value = "usuario/:UsuarioID?/:action?(edit)", layout = MainLayout.class)
@@ -36,6 +43,7 @@ public class UsuariosView extends Div {
     private final UsuarioService usuarioService;
     private final RolService rolService;
     private final PersonaService personaService;
+    private final PasswordUtils passwordUtils;
     private BeanValidationBinder<Usuario> binder;
     private Usuario usuario;
 
@@ -43,12 +51,10 @@ public class UsuariosView extends Div {
     private Grid<Usuario> gridUsuarios = new Grid<>(Usuario.class, false);
     private final TextField usuarioField = new TextField("Usuario");
     private final PasswordField passwordField = new PasswordField("Contraseña");
-    private final TextField creadorField = new TextField("Creador");
     private final Checkbox activoCheckbox = new Checkbox("Activo");
     // Asumir la existencia de un ComboBox para Rol y Persona si es necesario
-     private final ComboBox<Rol> rolComboBox = new ComboBox<>("Rol");
-     private final ComboBox<Persona> personaComboBox = new ComboBox<>("Persona");
-
+    private final ComboBox<Rol> rolComboBox = new ComboBox<>("Rol");
+    private final ComboBox<Persona> personaComboBox = new ComboBox<>("Persona");
     private final Button save = new Button("Guardar");
     private final Button cancel = new Button("Cancelar");
     private final Button delete = new Button("Eliminar", VaadinIcon.TRASH.create());
@@ -56,10 +62,11 @@ public class UsuariosView extends Div {
     private final FormLayout formLayout = new FormLayout();
 
     @Autowired
-    public UsuariosView(UsuarioService usuarioService, RolService rolService, PersonaService personaService) {
+    public UsuariosView(UsuarioService usuarioService, RolService rolService, PersonaService personaService, PasswordUtils passwordUtils) {
         this.usuarioService = usuarioService;
         this.rolService = rolService;
         this.personaService = personaService;
+        this.passwordUtils = passwordUtils;
         try {
             // Configure Form
             binder = new BeanValidationBinder<>(Usuario.class);
@@ -78,6 +85,17 @@ public class UsuariosView extends Div {
         refreshGrid();
     }
 
+    private final SerializableBiConsumer<Span, Usuario> EstadoComponenteActivo = (
+            span, usuario) -> {
+        String theme = String.format("badge %s",
+                usuario.getActivo() ? "success" : "error");
+        span.getElement().setAttribute("theme", theme);
+        span.setText(usuario.getActivo()?"Activo":"Desactivado");
+    };
+    private ComponentRenderer<Span, Usuario> CrearComponmenteActivoRenderer() {
+        return new ComponentRenderer<>(Span::new, EstadoComponenteActivo);
+    }
+
     private void setupGrid() {
         gridUsuarios = new Grid<>();
         gridUsuarios.setClassName("grilla");
@@ -85,8 +103,8 @@ public class UsuariosView extends Div {
         gridUsuarios.addColumn(Usuario::getUsuario).setHeader("Usuario");
         gridUsuarios.addColumn(usuario -> usuario.getRol() != null ? usuario.getRol().getCargo() : "").setHeader("Rol");
         gridUsuarios.addColumn(usuario -> usuario.getPersona() != null ? usuario.getPersona().getNombreCompleto() : "").setHeader("Persona");
-        gridUsuarios.addColumn(Usuario::getCreador).setHeader("Creador");
-        gridUsuarios.addColumn(Usuario::getActivo).setHeader("Activo");
+        gridUsuarios.addColumn(CrearComponmenteActivoRenderer()).setHeader("Estado");
+
         gridUsuarios.asSingleSelect().addValueChangeListener(event -> editUsuario(event.getValue()));
     }
 
@@ -97,7 +115,7 @@ public class UsuariosView extends Div {
         Div div = new Div();
         div.setClassName("editor");
         editorDiv.add(div);
-        formLayout.add(rolComboBox,personaComboBox,usuarioField, passwordField, creadorField, activoCheckbox);
+        formLayout.add(rolComboBox,personaComboBox,usuarioField, passwordField, activoCheckbox);
         save.addClickListener(event -> save());
         cancel.addClickListener(event -> clearForm());
         delete.addClickListener(event -> delete());
@@ -135,15 +153,12 @@ public class UsuariosView extends Div {
     private void setupForm() {
         // Configura los campos del formulario para usarlos con el Binder
         binder.forField(usuarioField)
-                .withValidator(new StringLengthValidator("El nombre de usuario debe tener entre 3 y 50 caracteres", 3, 50))
                 .bind(Usuario::getUsuario, Usuario::setUsuario);
 
         binder.forField(passwordField)
-                .withValidator(new StringLengthValidator("La contraseña debe tener entre 5 y 50 caracteres", 5, 50))
                 .bind(Usuario::getPassword, Usuario::setPassword);
 
         // Asume que creadorField y activoCheckbox no necesitan validación específica
-        binder.bind(creadorField, Usuario::getCreador, Usuario::setCreador);
         binder.bind(activoCheckbox, Usuario::getActivo, Usuario::setActivo);
 
         // Configuración adicional del formulario como oyentes de eventos, por ejemplo, para el botón de guardar
@@ -152,13 +167,13 @@ public class UsuariosView extends Div {
         delete.addClickListener(event -> delete());
 
         // Asegúrate de que el botón de guardar esté habilitado solo cuando el formulario es válido
-        binder.addStatusChangeListener(event -> save.setEnabled(binder.isValid()));
+        //binder.addStatusChangeListener(event -> save.setEnabled(binder.isValid()));
 
         // Configura el layout de los botones
         HorizontalLayout buttonLayout = new HorizontalLayout(save, cancel, delete);
 
         // Agrega todos los campos y el layout de botones al layout principal del formulario
-        formLayout.add(usuarioField, passwordField, creadorField, activoCheckbox, buttonLayout);
+        formLayout.add(usuarioField, passwordField, activoCheckbox, buttonLayout);
 
         // Establece el rol y la persona si aplicable, puedes necesitar ComboBox para estos
         // Aquí puedes configurar cómo seleccionar un Rol o Persona usando ComboBox o un componente similar
@@ -177,17 +192,39 @@ public class UsuariosView extends Div {
 
 
     private void save() {
-        if (this.usuario == null) {
-            this.usuario = new Usuario();
-        }
         try {
+            if (this.usuario == null) {
+                this.usuario = new Usuario(); // Considerar si esto es apropiado para tu lógica de negocio
+            }
             binder.writeBean(this.usuario);
-            usuarioService.save(this.usuario);
-            refreshGrid();
+
+            // Verifica si es un nuevo usuario o una actualización
+            if (this.usuario.getId() == null) {
+                // Nuevo usuario
+                if (!passwordField.isEmpty()) {
+                    this.usuario.setPassword(passwordUtils.encryptPassword(passwordField.getValue()));
+                }
+                // Asume que usuarioService.save() maneja tanto la creación como la actualización.
+                usuarioService.save(this.usuario);
+            } else {
+                // Actualización de un usuario existente
+                if (!passwordField.isEmpty()) {
+                    this.usuario.setPassword(passwordUtils.encryptPassword(passwordField.getValue()));
+                }
+                usuarioService.update(this.usuario); // Asegúrate de que este método exista y haga lo que esperas
+            }
+
             clearForm();
-            Notification.show("Usuario guardado con éxito");
-        } catch (Exception e) {
-            Notification.show("Error al guardar el usuario: " + e.getMessage(), 5000, Notification.Position.BOTTOM_START);
+            refreshGrid();
+            Notification.show("Datos actualizados");
+            UI.getCurrent().navigate(UsuariosView.class);
+        } catch (ObjectOptimisticLockingFailureException exception) {
+            Notification n = Notification.show(
+                    "Error al actualizar los datos. Alguien más actualizó el registro mientras usted hacía cambios.");
+            n.setPosition(Notification.Position.MIDDLE);
+            n.addThemeVariants(NotificationVariant.LUMO_ERROR);
+        } catch (ValidationException validationException) {
+            Notification.show("No se pudieron actualizar los datos. Compruebe nuevamente que todos los valores sean válidos.");
         }
     }
 
@@ -203,6 +240,7 @@ public class UsuariosView extends Div {
     private void clearForm() {
         this.usuario = null; // Limpiar la referencia al usuario actual
         binder.readBean(new Usuario()); // Limpiar los campos del formulario
+        save.setText("Guardar"); // Cambiar el texto del botón de vuelta a "Guardar" cuando se limpia el formulario
     }
 
     private void editUsuario(Usuario usuario) {
@@ -211,6 +249,8 @@ public class UsuariosView extends Div {
         } else {
             this.usuario = usuario;
             binder.readBean(this.usuario);
+            save.setText("Actualizar"); // Cambiar el texto del botón a "Actualizar"
+            passwordField.clear(); // Limpiar el campo de contraseña
         }
     }
 }

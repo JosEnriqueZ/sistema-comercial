@@ -2,9 +2,11 @@ package com.elolympus.data.Administracion;
 
 import com.elolympus.data.AbstractEntity;
 import com.elolympus.security.SecurityUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -19,11 +21,12 @@ public class Usuario extends AbstractEntity {
     private Boolean activo;
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    @OneToOne
+    @ManyToOne
     private Rol rol;
     @Column(name = "usuario", length = 50, nullable = false)
     private String usuario;
-    @Column(name = "password", length = 50, nullable = false)
+    @JsonIgnore
+    @Column(name = "password", length = 150, nullable = false)
     private String password;
     @OneToOne
     private Persona persona;
@@ -104,4 +107,5 @@ public class Usuario extends AbstractEntity {
     public void setPersona(Persona persona) {
         this.persona = persona;
     }
+
 }

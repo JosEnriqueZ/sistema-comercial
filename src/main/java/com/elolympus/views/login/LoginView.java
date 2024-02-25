@@ -25,7 +25,6 @@ public class LoginView extends Div implements BeforeEnterObserver {
 
     private final AuthenticatedUser authenticatedUser;
     private final LoginForm lf;
-    private final Checkbox rememberMe = new Checkbox("Recuérdame");
 
     public LoginView(AuthenticatedUser authenticatedUser) {
         this.authenticatedUser = authenticatedUser;

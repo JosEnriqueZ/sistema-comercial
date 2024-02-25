@@ -20,11 +20,6 @@ public class RolService {
         return repository.findAll();
     }
 
-    // Método para guardar o actualizar un rol
-    public Rol save(Rol rol) {
-        return repository.save(rol);
-    }
-
     // Método para eliminar un rol
     public void delete(Rol rol) {
         repository.delete(rol);

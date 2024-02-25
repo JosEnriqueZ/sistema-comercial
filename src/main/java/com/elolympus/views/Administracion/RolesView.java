@@ -6,6 +6,7 @@ import com.elolympus.services.RolService;
 import com.elolympus.views.MainLayout;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -29,6 +30,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,22 +143,27 @@ public class RolesView extends Div implements BeforeEnterObserver {
         } else {
             this.rol = rol;
             binder.readBean(this.rol);
+            save.setText("Actualizar"); // Cambiar el texto del botón a "Actualizar"
         }
     }
     private void save() {
-        if (this.rol == null) {
-            this.rol = new Rol();
-        }
         try {
+            if (this.rol == null) {
+                this.rol = new Rol();
+            }
             binder.writeBean(this.rol);
-            rolService.save(this.rol);
-            updateList();
+            rolService.update(this.rol);
             clearForm();
-            Notification.show("Rol guardado con éxito");
-        } catch (ValidationException e) {
-            Notification.show("Error de validación: " + e.getMessage()).addThemeVariants(NotificationVariant.LUMO_ERROR);
-        } catch (Exception e) {
-            Notification.show("Error al guardar el rol: " + e.getMessage()).addThemeVariants(NotificationVariant.LUMO_ERROR);
+            refreshGrid();
+            Notification.show("Datos actualizados");
+            UI.getCurrent().navigate(RolesView.class);
+        } catch (ObjectOptimisticLockingFailureException exception) {
+            Notification n = Notification.show(
+                    "Error al actualizar los datos. Alguien más actualizó el registro mientras usted hacía cambios.");
+            n.setPosition(Notification.Position.MIDDLE);
+            n.addThemeVariants(NotificationVariant.LUMO_ERROR);
+        } catch (ValidationException validationException) {
+            Notification.show("No se pudieron actualizar los datos. Compruebe nuevamente que todos los valores sean válidos.");
         }
     }
 
@@ -172,6 +179,7 @@ public class RolesView extends Div implements BeforeEnterObserver {
     private void clearForm() {
         this.rol = null;
         binder.readBean(new Rol());
+        save.setText("Guardar"); // Cambiar el texto del botón de vuelta a "Guardar" cuando se limpia el formulario
     }
     private void populateForm(Rol rol) {
         // Establece los valores de los campos del formulario con las propiedades del rol
