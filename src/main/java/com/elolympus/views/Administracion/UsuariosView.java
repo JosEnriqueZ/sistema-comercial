@@ -180,11 +180,6 @@ public class UsuariosView extends Div {
         // Agrega todos los campos y el layout de botones al layout principal del formulario
         formLayout.add(usuarioField, passwordField, activoCheckbox, buttonLayout);
 
-        // Establece el rol y la persona si aplicable, puedes necesitar ComboBox para estos
-        // Aquí puedes configurar cómo seleccionar un Rol o Persona usando ComboBox o un componente similar
-
-        // Nota: Para configurar un ComboBox con entidades, necesitarás configurar el DataProvider para el ComboBox
-        // Por ejemplo:
          rolComboBox.setItems(rolService.findAll());
          rolComboBox.setItemLabelGenerator(Rol::getCargo); // Asumiendo que Rol tiene un método getCargo
          binder.forField(rolComboBox).bind(Usuario::getRol, Usuario::setRol);
@@ -197,11 +192,14 @@ public class UsuariosView extends Div {
     private void save() {
         try {
             // Verifica si el usuario tiene información válida antes de intentar guardar
-            if (this.usuario == null || (this.usuario.getUsuario().isEmpty() && passwordField.isEmpty())) {
+            if (usuarioField.isEmpty() && passwordField.isEmpty()) {
                 Notification.show("No se puede guardar un usuario vacío.");
-                return; // Salir del método si no hay información válida para guardar
+            }else{
+                if (this.usuario == null) {
+                    this.usuario = new Usuario();
+                }
+                binder.writeBean(this.usuario);
             }
-            binder.writeBean(this.usuario);
 
             // Verifica si es un nuevo usuario o una actualización
             if (this.usuario.getId() == null) {
@@ -211,6 +209,7 @@ public class UsuariosView extends Div {
                 }
                 // Asume que usuarioService.save() maneja tanto la creación como la actualización.
                 usuarioService.save(this.usuario);
+                Notification.show("Datos Agregados");
             } else {
                 // Actualización de un usuario existente
                 if (!passwordField.isEmpty()) {
@@ -220,11 +219,11 @@ public class UsuariosView extends Div {
                     this.usuario.setPassword(Password);
                 }
                 usuarioService.update(this.usuario); // Asegúrate de que este método exista y haga lo que esperas
+                Notification.show("Datos actualizados");
             }
 
             clearForm();
             refreshGrid();
-            Notification.show("Datos actualizados");
             UI.getCurrent().navigate(UsuariosView.class);
         } catch (ObjectOptimisticLockingFailureException exception) {
             Notification n = Notification.show(
