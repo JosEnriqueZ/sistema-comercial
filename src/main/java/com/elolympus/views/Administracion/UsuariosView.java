@@ -60,6 +60,11 @@ public class UsuariosView extends Div {
     private final Button cancel = new Button("Cancelar");
     private final Button delete = new Button("Eliminar", VaadinIcon.TRASH.create());
 
+//  Textfields de busqueda por Usuario, Rol y Persona
+    private final TextField usuarioBusqueda = new TextField("Usuario");
+    private final ComboBox<Rol> rolBusqueda = new ComboBox<>("Rol");
+    private final ComboBox<Persona> personaBusqueda = new ComboBox<>("Persona");
+
     private final FormLayout formLayout = new FormLayout();
 
     private String Password;

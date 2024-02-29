@@ -24,6 +24,7 @@ import com.elolympus.views.helloworld.HelloWorldView;
 import com.elolympus.views.pruebas.pruebaView;
 import com.elolympus.views.reportes.ReportesView;
 import com.elolympus.views.sobrenosotros.SobreNosotrosView;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
@@ -211,7 +212,11 @@ public class MainLayout extends AppLayout {
             div.getElement().getStyle().set("align-items", "center");
             div.getElement().getStyle().set("gap", "var(--lumo-space-s)");
             userName.add(div);
-            userName.getSubMenu().addItem("Perfil de Usuario");
+            userName.getSubMenu().addItem("Perfil de Usuario", e -> {
+                Long userId = user.getId(); // Asumiendo que tienes un método getId() en tu entidad Usuario
+                UI.getCurrent().navigate("perfil-usuario/" + userId);
+            });
+
             userName.getSubMenu().addItem("Cerrar Sesion", e -> {
                 authenticatedUser.logout();
             });

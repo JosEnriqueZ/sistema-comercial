@@ -33,4 +33,8 @@ public class RolService {
         return repository.save(rol);
     }
 
+    public List<Rol> findRolesByAreaContainingAndCargoContainingAndDescriptionContaining(String area, String cargo, String description) {
+        return repository.findRolesByAreaContainingAndCargoContainingAndDescripcionContaining(area, cargo, description);
+    }
+
 }

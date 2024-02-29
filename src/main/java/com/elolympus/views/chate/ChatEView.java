@@ -1,5 +1,6 @@
 package com.elolympus.views.chate;
 
+import com.elolympus.security.SecurityUtils;
 import com.elolympus.views.MainLayout;
 import com.vaadin.collaborationengine.CollaborationAvatarGroup;
 import com.vaadin.collaborationengine.CollaborationMessageInput;
@@ -100,7 +101,8 @@ public class ChatEView extends HorizontalLayout {
         // identifier, and the user's real name. You can also provide the users
         // avatar by passing an url to the image as a third parameter, or by
         // configuring an `ImageProvider` to `avatarGroup`.
-        UserInfo userInfo = new UserInfo(UUID.randomUUID().toString(), "Steve Lange");
+        UserInfo userInfo = new UserInfo(UUID.randomUUID().toString(), SecurityUtils.obtenerNombreUsuarioActual());
+        //UserInfo userInfo = new UserInfo(UUID.randomUUID().toString(), "Usuario Anónimo");
 
         tabs = new Tabs();
         for (ChatInfo chat : chats) {
@@ -144,7 +146,7 @@ public class ChatEView extends HorizontalLayout {
         Header header = new Header();
         header.addClassNames(Display.FLEX, FlexDirection.ROW, Width.FULL, AlignItems.CENTER, Padding.MEDIUM,
                 BoxSizing.BORDER);
-        H3 channels = new H3("Channels");
+        H3 channels = new H3("Canales");
         channels.addClassNames(Flex.GROW, Margin.NONE);
         CollaborationAvatarGroup avatarGroup = new CollaborationAvatarGroup(userInfo, "chat");
         avatarGroup.setMaxItemsVisible(4);

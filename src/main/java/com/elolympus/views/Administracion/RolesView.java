@@ -61,6 +61,9 @@ public class RolesView extends Div implements BeforeEnterObserver {
 
     private FormLayout formLayout = new FormLayout();
 
+    private TextField areaField= new TextField("Área","Buscar por Área");
+    private TextField cargoField = new TextField("Cargo","Buscar por Cargo");
+    private TextField descripcionField = new TextField("Descripción","Buscar por Descripción");
     private Grid<Rol> grid = new Grid<>(Rol.class);
     @Autowired
     public RolesView(RolService rolService) {
@@ -80,6 +83,9 @@ public class RolesView extends Div implements BeforeEnterObserver {
         splitLayout.setSizeFull();
         add(splitLayout);
         updateList();
+        areaField.addValueChangeListener(e -> busqueda(areaField.getValue(), cargoField.getValue(), descripcionField.getValue()));
+        cargoField.addValueChangeListener(e -> busqueda(areaField.getValue(), cargoField.getValue(), descripcionField.getValue()));
+        descripcionField.addValueChangeListener(e -> busqueda(areaField.getValue(), cargoField.getValue(), descripcionField.getValue()));
     }
     private void configureGrid() {
 
@@ -125,11 +131,14 @@ public class RolesView extends Div implements BeforeEnterObserver {
     }
 
     private Component createGridLayout() {
+        HorizontalLayout busquedaDiv = new HorizontalLayout();
+        busquedaDiv.addClassName("tophl");
+        busquedaDiv.add(areaField, cargoField, descripcionField);
         Div wrapper = new Div();
         wrapper.setClassName("grid-wrapper");
         wrapper.setSizeFull();
         wrapper.setHeightFull();
-        wrapper.add(grid);
+        wrapper.add(busquedaDiv,grid);
         return wrapper;
     }
 
@@ -201,6 +210,16 @@ public class RolesView extends Div implements BeforeEnterObserver {
     private void refreshGrid() {
         List<Rol> roles = rolService.findAll(); // Utiliza el método 'findAll' de tu RolService para obtener todos los roles
         grid.setItems(roles); // Actualiza los ítems del grid con la lista de roles
+    }
+
+    private void busqueda(String area,String cargo,String descripcion){
+         area = areaField.getValue();
+         cargo = cargoField.getValue();
+         descripcion = descripcionField.getValue();
+
+        List<Rol> roles = rolService.findRolesByAreaContainingAndCargoContainingAndDescriptionContaining(area, cargo, descripcion);
+
+        grid.setItems(roles);
     }
 
     @Override
