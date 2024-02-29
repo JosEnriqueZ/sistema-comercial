@@ -39,11 +39,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>com.vaadin</groupId>
-                <artifactId>vaadin-collaboration-engine</artifactId>
-                <version>${vaadin.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
