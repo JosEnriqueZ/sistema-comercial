@@ -1,4 +1,4 @@
-package com.elolympus.data.Venta;
+package com.elolympus.data.Logistica;
 
 import com.elolympus.data.AbstractEntity;
 import jakarta.persistence.Column;
@@ -51,40 +51,15 @@ public class OrdenCompra extends AbstractEntity {
     @Column(name = "dias_credito")
     private Integer diasCredito;
 
-    @Column(name = "creador")
-    private String creador;
-
-    @Column(name = "activo")
-    private Boolean activo;
-
     @Column(name = "sucursal")
     private Integer sucursal;
 
     @Column(name = "impuesto_incluido")
     private Boolean impuesto_incluido;
+    @Column(name="documento_pago")
+    private String documento_pago;
 
     public OrdenCompra() {
     }
-
-    public OrdenCompra(Integer almacenEntrega, Integer numeroProveedor, Integer direccionProveedor, Date fecha, Date fechaEntrega, Integer formaPago, Integer moneda, Integer impuesto, BigDecimal total, String observaciones, BigDecimal totalCobrado, BigDecimal tipoCambio, Integer diasCredito, String creador, Boolean activo, Integer sucursal, Boolean impuesto_incluido) {
-        this.almacenEntrega = almacenEntrega;
-        this.numeroProveedor = numeroProveedor;
-        this.direccionProveedor = direccionProveedor;
-        this.fecha = fecha;
-        this.fechaEntrega = fechaEntrega;
-        this.formaPago = formaPago;
-        this.moneda = moneda;
-        this.impuesto = impuesto;
-        this.total = total;
-        this.observaciones = observaciones;
-        this.totalCobrado = totalCobrado;
-        this.tipoCambio = tipoCambio;
-        this.diasCredito = diasCredito;
-        this.creador = creador;
-        this.activo = activo;
-        this.sucursal = sucursal;
-        this.impuesto_incluido = impuesto_incluido;
-    }
-
 
 }
