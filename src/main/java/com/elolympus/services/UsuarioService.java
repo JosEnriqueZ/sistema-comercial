@@ -1,8 +1,11 @@
 package com.elolympus.services;
 
+import com.elolympus.data.Administracion.Persona;
+import com.elolympus.data.Administracion.Rol;
 import com.elolympus.data.Administracion.Usuario;
 import com.elolympus.services.repository.UsuarioRepository;
 import com.elolympus.services.specifications.UsuarioSpecifications;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,5 +50,22 @@ public class UsuarioService {
     // Método para encontrar un usuario por ID
     public Optional<Usuario> findById(Long id) {
         return repository.findById(id);
+    }
+
+    // Método para buscar usuarios por nombre de usuario, rol y persona
+    public List<Usuario> findByUsernameRolAndPersona(String usuario, Rol rol, Persona persona) {
+        Specification<Usuario> spec = Specification.where(null);
+
+        if (usuario != null && !usuario.isEmpty()) {
+            spec = spec.and(UsuarioSpecifications.hasUsuario(usuario));
+        }
+        if (rol != null) {
+            spec = spec.and(UsuarioSpecifications.hasRol(rol));
+        }
+        if (persona != null) {
+            spec = spec.and(UsuarioSpecifications.hasPersona(persona));
+        }
+
+        return repository.findAll(spec);
     }
 }

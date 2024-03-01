@@ -36,6 +36,8 @@ import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
+import java.util.List;
+
 @PageTitle("Usuarios")
 @Route(value = "usuario/:UsuarioID?/:action?(edit)", layout = MainLayout.class)
 @PermitAll
@@ -53,14 +55,13 @@ public class UsuariosView extends Div {
     private final TextField usuarioField = new TextField("Usuario");
     private final PasswordField passwordField = new PasswordField("Contraseña");
     private final Checkbox activoCheckbox = new Checkbox("Activo");
-    // Asumir la existencia de un ComboBox para Rol y Persona si es necesario
     private final ComboBox<Rol> rolComboBox = new ComboBox<>("Rol");
     private final ComboBox<Persona> personaComboBox = new ComboBox<>("Persona");
     private final Button save = new Button("Guardar");
     private final Button cancel = new Button("Cancelar");
     private final Button delete = new Button("Eliminar", VaadinIcon.TRASH.create());
 
-//  Textfields de busqueda por Usuario, Rol y Persona
+    // Componentes de búsqueda
     private final TextField usuarioBusqueda = new TextField("Usuario");
     private final ComboBox<Rol> rolBusqueda = new ComboBox<>("Rol");
     private final ComboBox<Persona> personaBusqueda = new ComboBox<>("Persona");
@@ -85,8 +86,18 @@ public class UsuariosView extends Div {
         }
         addClassNames("usuario-view");
         setSizeFull();
+        // Configura la búsqueda después de inicializar los componentes
+        setupSearch();
         setupGrid();
         setupForm();
+        usuarioBusqueda.addValueChangeListener(e -> applyFilter());
+        rolBusqueda.setItemLabelGenerator(Rol::getCargo); // Asumiendo que Rol tiene un método getCargo
+        rolBusqueda.setItems(rolService.findAll());
+        rolBusqueda.addValueChangeListener(e -> applyFilter());
+        personaBusqueda.setItemLabelGenerator(Persona::getNombreCompleto); // Asumiendo que Persona tiene un método getNombreCompleto
+        personaBusqueda.setItems(personaService.findAll());
+        personaBusqueda.addValueChangeListener(e -> applyFilter());
+
         SplitLayout layout = new SplitLayout(createGridLayout(), createEditorLayout());
         layout.setSizeFull();
         add(layout);
@@ -146,16 +157,47 @@ public class UsuariosView extends Div {
 
 
     private Component createGridLayout() {
+        // Agrega la búsqueda al layout
+        HorizontalLayout searchDiv = new HorizontalLayout();
+        searchDiv.addClassName("tophl");
+        searchDiv.add(createSearchLayout());
+        add(searchDiv);
         Div wrapper = new Div();
         wrapper.setClassName("grid-wrapper");
         wrapper.setSizeFull();
-        wrapper.add(gridUsuarios);
+        wrapper.add(searchDiv,gridUsuarios);
         return wrapper;
     }
 
     private void refreshGrid() {
         // Actualización de los datos mostrados en el grid
         gridUsuarios.setItems(usuarioService.findAll());
+    }
+
+    private void setupSearch() {
+        usuarioBusqueda.setPlaceholder("Buscar por usuario");
+        rolBusqueda.setPlaceholder("Buscar por rol");
+        rolBusqueda.setItemLabelGenerator(Rol::getCargo); // Asumiendo que Rol tiene un método getCargo
+        rolBusqueda.setItems(rolService.findAll());
+        personaBusqueda.setPlaceholder("Buscar por persona");
+        personaBusqueda.setItemLabelGenerator(Persona::getNombreCompleto); // Asumiendo que Persona tiene un método getNombreCompleto
+        personaBusqueda.setItems(personaService.findAll());
+
+    }
+    private void applyFilter() {
+        String usernameValue = usuarioBusqueda.getValue();
+        Rol rolValue = rolBusqueda.getValue();
+        Persona personaValue = personaBusqueda.getValue();
+
+        // Aquí deberías llamar a un método del servicio que permita filtrar por estos tres criterios.
+        // Este es un ejemplo de cómo podría ser este método:
+        List<Usuario> filteredUsers = usuarioService.findByUsernameRolAndPersona(usernameValue, rolValue, personaValue);
+        gridUsuarios.setItems(filteredUsers);
+    }
+    private Component createSearchLayout() {
+        HorizontalLayout searchLayout = new HorizontalLayout();
+        searchLayout.add(usuarioBusqueda, rolBusqueda, personaBusqueda);
+        return searchLayout;
     }
 
     private void setupForm() {

@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 
 @Entity
-@Table(name = "orden_regularizacion_det")
+@Table(name = "orden_regularizacion_det", schema = "almacen")
 public class OrdenRegularizacionDet extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "orden_regularizacion", referencedColumnName = "id")

@@ -7,7 +7,7 @@ import java.sql.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "orden_regularizacion")
+@Table(name = "orden_regularizacion", schema = "almacen")
 public class OrdenRegularizacion extends AbstractEntity {
     @Column(name = "numero")
     private Integer numero;

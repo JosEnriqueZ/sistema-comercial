@@ -10,7 +10,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "kardex")
+@Table(name = "kardex", schema = "almacen")
 public class Kardex extends AbstractEntity {
     @Column(name = "orden_id")
     private Integer ordenId;

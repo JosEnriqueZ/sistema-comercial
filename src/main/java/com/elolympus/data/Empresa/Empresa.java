@@ -6,7 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "empresa")
+@Table(name = "empresa", schema = "empresa")
 public class Empresa extends AbstractEntity{
 
     @Column(name = "direccion")

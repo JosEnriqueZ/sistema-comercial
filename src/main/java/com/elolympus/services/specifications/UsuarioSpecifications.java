@@ -1,5 +1,7 @@
 package com.elolympus.services.specifications;
 
+import com.elolympus.data.Administracion.Persona;
+import com.elolympus.data.Administracion.Rol;
 import com.elolympus.data.Administracion.Usuario;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
@@ -20,6 +22,33 @@ public class UsuarioSpecifications {
             Predicate predicadoActivo = criteriaBuilder.isTrue(root.get("activo"));
 
             return criteriaBuilder.and(predicadoUsuario, predicadoActivo);
+        };
+    }
+
+    public static Specification<Usuario> hasUsuario(String usuario) {
+        return (root, query, criteriaBuilder) -> {
+            if (usuario == null || usuario.isEmpty()) {
+                return null;
+            }
+            return criteriaBuilder.like(criteriaBuilder.lower(root.get("usuario")), "%" + usuario.toLowerCase() + "%");
+        };
+    }
+
+    public static Specification<Usuario> hasRol(Rol rol) {
+        return (root, query, criteriaBuilder) -> {
+            if (rol == null) {
+                return null;
+            }
+            return criteriaBuilder.equal(root.get("rol"), rol);
+        };
+    }
+
+    public static Specification<Usuario> hasPersona(Persona persona) {
+        return (root, query, criteriaBuilder) -> {
+            if (persona == null) {
+                return null;
+            }
+            return criteriaBuilder.equal(root.get("persona"), persona);
         };
     }
 }
