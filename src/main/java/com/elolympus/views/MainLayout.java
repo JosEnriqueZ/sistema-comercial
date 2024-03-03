@@ -1,7 +1,6 @@
 package com.elolympus.views;
 
 import com.elolympus.data.Administracion.Usuario;
-import com.elolympus.data.User;
 import com.elolympus.security.AuthenticatedUser;
 import com.elolympus.views.Administracion.PersonasView;
 import com.elolympus.views.Administracion.RolesView;
@@ -21,7 +20,7 @@ import com.elolympus.views.formpersona.FormPersonaView;
 import com.elolympus.views.galeriaimagenes.GaleriaImagenesView;
 import com.elolympus.views.grillaporsifunciona.GrillaporsifuncionaView;
 import com.elolympus.views.helloworld.HelloWorldView;
-import com.elolympus.views.pruebas.pruebaView;
+import com.elolympus.views.bienvenida.BienvenidaView;
 import com.elolympus.views.reportes.ReportesView;
 import com.elolympus.views.sobrenosotros.SobreNosotrosView;
 import com.vaadin.flow.component.UI;
@@ -42,10 +41,8 @@ import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import com.vaadin.flow.theme.lumo.LumoUtility;
-import java.io.ByteArrayInputStream;
 import java.util.Optional;
 
 import org.vaadin.lineawesome.LineAwesomeIcon;
@@ -57,8 +54,8 @@ public class MainLayout extends AppLayout {
 
     private H2 viewTitle;
 
-    private AuthenticatedUser authenticatedUser;
-    private AccessAnnotationChecker accessChecker;
+    private final AuthenticatedUser authenticatedUser;
+    private final AccessAnnotationChecker accessChecker;
 
     public MainLayout(AuthenticatedUser authenticatedUser, AccessAnnotationChecker accessChecker) {
         this.authenticatedUser = authenticatedUser;
@@ -95,7 +92,7 @@ public class MainLayout extends AppLayout {
 
 
         //VENTAS
-        if (accessChecker.hasAccess(pruebaView.class)){
+        if (accessChecker.hasAccess(BienvenidaView.class)){
             SideNavItem ventas = new SideNavItem("Ventas");
             ventas.setPrefixComponent(VaadinIcon.SHOP.create());
             ventas.addItem(new SideNavItem("Facturas", FacturasView.class, VaadinIcon.CLIPBOARD_CHECK.create()));
@@ -105,7 +102,7 @@ public class MainLayout extends AppLayout {
         }
 
         //LOGUISTICA
-        if (accessChecker.hasAccess(pruebaView.class)){
+        if (accessChecker.hasAccess(BienvenidaView.class)){
             SideNavItem ventas = new SideNavItem("Logistica");
             ventas.setPrefixComponent(VaadinIcon.CALC_BOOK.create());
             ventas.addItem(new SideNavItem("Almacen", AlmacenView.class, VaadinIcon.PACKAGE.create()));
@@ -114,12 +111,19 @@ public class MainLayout extends AppLayout {
             nav.addItem(ventas);
         }
         //ADMINISTRACION
-        if (accessChecker.hasAccess(pruebaView.class)){
+        if (accessChecker.hasAccess(BienvenidaView.class)){
             SideNavItem ventas = new SideNavItem("Administración");
             ventas.setPrefixComponent(VaadinIcon.COG.create());
             ventas.addItem(new SideNavItem("Personas", PersonasView.class, VaadinIcon.USER_CHECK.create()));
             ventas.addItem(new SideNavItem("Roles", RolesView.class, VaadinIcon.USERS.create()));
             ventas.addItem(new SideNavItem("Usuarios", UsuariosView.class, VaadinIcon.USER.create()));
+            nav.addItem(ventas);
+        }
+        //EMPRESA
+        if (accessChecker.hasAccess(BienvenidaView.class)) {
+            SideNavItem ventas = new SideNavItem("Empresa");
+            ventas.setPrefixComponent(VaadinIcon.BUILDING.create());
+            ventas.addItem(new SideNavItem("Empresa", HelloWorldView.class, VaadinIcon.BUILDING.create()));
             nav.addItem(ventas);
         }
 

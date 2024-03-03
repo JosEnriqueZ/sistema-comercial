@@ -1,6 +1,5 @@
 package com.elolympus.views.Administracion;
 
-import com.elolympus.data.Administracion.Persona;
 import com.elolympus.data.Administracion.Rol;
 import com.elolympus.services.RolService;
 import com.elolympus.views.MainLayout;
@@ -18,7 +17,6 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
@@ -32,7 +30,6 @@ import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,24 +43,23 @@ public class RolesView extends Div implements BeforeEnterObserver {
     private Rol rol;
 
     public final String ROL_ID = "RolID";
-    public final String ROL_EDIT_ROUTE_TEMPLATE = "rol/%s/edit";
-    private TextField area = new TextField("Área");
-    private TextField cargo = new TextField("Cargo");
-    private TextField descripcion = new TextField("Descripción");
-    private Checkbox canCreate = new Checkbox("Puede Crear");
-    private Checkbox canRead = new Checkbox("Puede Leer");
-    private Checkbox canUpdate = new Checkbox("Puede Actualizar");
-    private Checkbox canDelete = new Checkbox("Puede Eliminar");
+    private final TextField area = new TextField("Área");
+    private final TextField cargo = new TextField("Cargo");
+    private final TextField descripcion = new TextField("Descripción");
+    private final Checkbox canCreate = new Checkbox("Puede Crear");
+    private final Checkbox canRead = new Checkbox("Puede Leer");
+    private final Checkbox canUpdate = new Checkbox("Puede Actualizar");
+    private final Checkbox canDelete = new Checkbox("Puede Eliminar");
 
-    private Button save = new Button("Guardar");
-    private Button cancel = new Button("Cancelar");
-    private Button delete = new Button("Eliminar", VaadinIcon.TRASH.create());
+    private final Button save = new Button("Guardar");
+    private final Button cancel = new Button("Cancelar");
+    private final Button delete = new Button("Eliminar", VaadinIcon.TRASH.create());
 
-    private FormLayout formLayout = new FormLayout();
+    private final FormLayout formLayout = new FormLayout();
 
-    private TextField areaField= new TextField("Área","Buscar por Área");
-    private TextField cargoField = new TextField("Cargo","Buscar por Cargo");
-    private TextField descripcionField = new TextField("Descripción","Buscar por Descripción");
+    private final TextField areaField= new TextField("Área","Buscar por Área");
+    private final TextField cargoField = new TextField("Cargo","Buscar por Cargo");
+    private final TextField descripcionField = new TextField("Descripción","Buscar por Descripción");
     private Grid<Rol> grid = new Grid<>(Rol.class);
     @Autowired
     public RolesView(RolService rolService) {

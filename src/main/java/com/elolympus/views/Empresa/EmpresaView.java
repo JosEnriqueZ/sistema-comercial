@@ -1,2 +1,4 @@
-package com.elolympus.views.Empresa;public class EmpresaView {
+package com.elolympus.views.Empresa;
+
+public class EmpresaView {
 }

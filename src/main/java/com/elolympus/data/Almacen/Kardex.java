@@ -8,6 +8,8 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "kardex", schema = "almacen")
@@ -200,5 +202,44 @@ public class Kardex extends AbstractEntity {
 
     public void setFechaVencimiento(Date fechaVencimiento) {
         this.fechaVencimiento = fechaVencimiento;
+    }
+
+    //toString
+    @Override
+    public String toString() {
+        return "Kardex{" +
+                "ordenId=" + ordenId +
+                ", fecha=" + fecha +
+                ", fechaOrden=" + fechaOrden +
+                ", movimiento='" + movimiento + '\'' +
+                ", almacen=" + almacen +
+                ", origen='" + origen + '\'' +
+                ", destino='" + destino + '\'' +
+                ", precioCosto=" + precioCosto +
+                ", precioVenta=" + precioVenta +
+                ", stockAnterior=" + stockAnterior +
+                ", ingreso=" + ingreso +
+                ", salida=" + salida +
+                ", stock=" + stock +
+                ", producto=" + producto +
+                ", fechaVencimiento=" + fechaVencimiento +
+                '}';
+    }
+
+    //Metodos de conversion
+    public static java.sql.Date toSqlDate(LocalDate localDate) {
+        return java.sql.Date.valueOf(localDate);
+    }
+
+    public static LocalDate toLocalDate(java.sql.Date date) {
+        return date.toLocalDate();
+    }
+
+    public static java.sql.Timestamp toTimestamp(LocalDateTime localDateTime) {
+        return java.sql.Timestamp.valueOf(localDateTime);
+    }
+
+    public static LocalDateTime toLocalDateTime(java.sql.Timestamp timestamp) {
+        return timestamp.toLocalDateTime();
     }
 }
