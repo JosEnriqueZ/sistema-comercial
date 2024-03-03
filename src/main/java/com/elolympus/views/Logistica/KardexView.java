@@ -184,10 +184,14 @@ public class KardexView extends Div {
     }
 
     private void delete(){
-        kardexService.delete(kardex);
-        refreshGrid();
-        clearForm();
-        Notification.show("Kardex eliminado correctamente.");
+        if(kardex != null) {
+            kardexService.delete(kardex);
+            clearForm();
+            refreshGrid();
+            Notification.show("Kardex eliminado correctamente.");
+        }else {
+            Notification.show("Seleccione un Kardex e intente nuevamente.");
+        }
     }
 
     private void clearForm(){

@@ -5,6 +5,7 @@ import com.elolympus.security.AuthenticatedUser;
 import com.elolympus.views.Administracion.PersonasView;
 import com.elolympus.views.Administracion.RolesView;
 import com.elolympus.views.Administracion.UsuariosView;
+import com.elolympus.views.Empresa.EmpresaView;
 import com.elolympus.views.Logistica.AlmacenView;
 import com.elolympus.views.Logistica.KardexView;
 import com.elolympus.views.Logistica.ProductosView;
@@ -123,7 +124,7 @@ public class MainLayout extends AppLayout {
         if (accessChecker.hasAccess(BienvenidaView.class)) {
             SideNavItem ventas = new SideNavItem("Empresa");
             ventas.setPrefixComponent(VaadinIcon.BUILDING.create());
-            ventas.addItem(new SideNavItem("Empresa", HelloWorldView.class, VaadinIcon.BUILDING.create()));
+            ventas.addItem(new SideNavItem("Empresa", EmpresaView.class, VaadinIcon.BUILDING.create()));
             nav.addItem(ventas);
         }
 
