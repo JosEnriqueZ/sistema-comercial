@@ -142,20 +142,20 @@ public class Persona extends AbstractEntity {
         this.email = email;
     }
 
-    public String getCelular() {
-        String celularStr = String.valueOf(this.celular);
-        return celularStr;
+    public Integer getNum_documento() {
+        return num_documento;
     }
 
-    public void setCelular(String celular) {
-        this.celular= Integer.parseInt(celular);
+    public void setNum_documento(Integer num_documento) {
+        this.num_documento = num_documento;
     }
-        public void setNum_documento(String num_documento) {
-        this.num_documento= Integer.parseInt(num_documento);
+
+    public Integer getCelular() {
+        return celular;
     }
-    public String getNum_documento() {
-        String NumeroStr = String.valueOf(this.num_documento);
-        return NumeroStr;
+
+    public void setCelular(Integer celular) {
+        this.celular = celular;
     }
 
     // Método para obtener el nombre completo

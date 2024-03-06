@@ -1,5 +1,6 @@
-package com.elolympus.data;
+package com.elolympus.data.samples;
 
+import com.elolympus.data.AbstractEntity;
 import jakarta.persistence.Entity;
 
 @Entity

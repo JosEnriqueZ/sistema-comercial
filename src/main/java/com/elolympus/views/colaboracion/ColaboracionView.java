@@ -1,7 +1,8 @@
 package com.elolympus.views.colaboracion;
 
-import com.elolympus.data.SamplePerson;
-import com.elolympus.services.SamplePersonService;
+import com.elolympus.data.samples.SamplePerson;
+import com.elolympus.security.SecurityUtils;
+import com.elolympus.services.samples.SamplePersonService;
 import com.elolympus.views.MainLayout;
 import com.vaadin.collaborationengine.CollaborationAvatarGroup;
 import com.vaadin.collaborationengine.CollaborationBinder;
@@ -77,7 +78,8 @@ public class ColaboracionView extends Div implements BeforeEnterObserver {
         // identifier, and the user's real name. You can also provide the users
         // avatar by passing an url to the image as a third parameter, or by
         // configuring an `ImageProvider` to `avatarGroup`.
-        UserInfo userInfo = new UserInfo(UUID.randomUUID().toString(), "Steve Lange");
+//        UserInfo userInfo = new UserInfo(UUID.randomUUID().toString(), "Steve Lange");
+        UserInfo userInfo = new UserInfo(UUID.randomUUID().toString(), SecurityUtils.obtenerNombreUsuarioActual());
 
         // Create UI
         SplitLayout splitLayout = new SplitLayout();

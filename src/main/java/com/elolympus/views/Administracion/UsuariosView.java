@@ -4,9 +4,9 @@ import com.elolympus.data.Administracion.Persona;
 import com.elolympus.data.Administracion.Rol;
 import com.elolympus.data.Administracion.Usuario;
 import com.elolympus.security.PasswordUtils;
-import com.elolympus.services.PersonaService;
-import com.elolympus.services.RolService;
-import com.elolympus.services.UsuarioService;
+import com.elolympus.services.services.PersonaService;
+import com.elolympus.services.services.RolService;
+import com.elolympus.services.services.UsuarioService;
 import com.elolympus.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
@@ -206,26 +206,6 @@ public class UsuariosView extends Div {
                 .withValidator(new StringLengthValidator(
                         "El nombre de usuario debe contener al menos 3 caracteres", 3, null))
                 .bind(Usuario::getUsuario, Usuario::setUsuario);
-
-        binder.forField(passwordField)
-                .bind(Usuario::getPassword, Usuario::setPassword);
-
-        // Asume que creadorField y activoCheckbox no necesitan validación específica
-        binder.bind(activoCheckbox, Usuario::getActivo, Usuario::setActivo);
-
-        // Configuración adicional del formulario como oyentes de eventos, por ejemplo, para el botón de guardar
-        save.addClickListener(event -> save());
-        cancel.addClickListener(event -> clearForm());
-        delete.addClickListener(event -> delete());
-
-        // Asegúrate de que el botón de guardar esté habilitado solo cuando el formulario es válido
-        //binder.addStatusChangeListener(event -> save.setEnabled(binder.isValid()));
-
-        // Configura el layout de los botones
-        HorizontalLayout buttonLayout = new HorizontalLayout(save, cancel, delete);
-
-        // Agrega todos los campos y el layout de botones al layout principal del formulario
-        formLayout.add(usuarioField, passwordField, activoCheckbox, buttonLayout);
 
          rolComboBox.setItems(rolService.findAll());
          rolComboBox.setItemLabelGenerator(Rol::getCargo); // Asumiendo que Rol tiene un método getCargo

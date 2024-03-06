@@ -1,12 +1,9 @@
 package com.elolympus.security;
 
 import com.elolympus.data.Administracion.Usuario;
-import com.elolympus.data.User;
-import com.elolympus.data.UserRepository;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.elolympus.services.repository.UsuarioRepository;
 import com.elolympus.services.specifications.UsuarioSpecifications;

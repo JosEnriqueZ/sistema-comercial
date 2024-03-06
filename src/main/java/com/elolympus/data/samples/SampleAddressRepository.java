@@ -1,4 +1,4 @@
-package com.elolympus.data;
+package com.elolympus.data.samples;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;

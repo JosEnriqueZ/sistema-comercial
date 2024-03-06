@@ -1,7 +1,7 @@
 package com.elolympus.views.reportes;
 
-import com.elolympus.data.SamplePerson;
-import com.elolympus.services.SamplePersonService;
+import com.elolympus.data.samples.SamplePerson;
+import com.elolympus.services.samples.SamplePersonService;
 import com.elolympus.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;

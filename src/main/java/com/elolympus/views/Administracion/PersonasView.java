@@ -1,7 +1,7 @@
 package com.elolympus.views.Administracion;
 
 import com.elolympus.data.Administracion.Persona;
-import com.elolympus.services.PersonaService;
+import com.elolympus.services.services.PersonaService;
 import com.elolympus.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
@@ -18,6 +18,7 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
+import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.ValidationException;
@@ -57,9 +58,9 @@ public class PersonasView extends Div implements BeforeEnterObserver{
     public FormLayout formLayout = new FormLayout();
     public TextField nombres           = new TextField("Nombres","");
     public TextField apellidos         = new TextField("Apellidos","");
-    public TextField tipo_documento    = new TextField("Tipo de Documento","");
-    public TextField num_documento     = new TextField("DNI","");
-    public TextField celular           = new TextField("Celular","");
+    public IntegerField tipo_documento    = new IntegerField("Tipo de Documento","");
+    public IntegerField num_documento     = new IntegerField("DNI","");
+    public IntegerField celular           = new IntegerField("Celular","");
     public TextField email             = new TextField("Correo","");
     public TextField sexo              = new TextField("Sexo","");
     public TextField creador           = new TextField("Creador", "");

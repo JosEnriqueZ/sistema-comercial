@@ -22,8 +22,8 @@ public class OrdenCompraDet extends AbstractEntity {
     @Column(name = "precio_unitario")
     private BigDecimal precioUnitario;
 
-    @Column(name = "total")
-    private BigDecimal total;
+    @Column(name = "totaldet")
+    private BigDecimal totaldet;
 
     @Column(name = "descuento")
     private BigDecimal descuento;
@@ -80,12 +80,12 @@ public class OrdenCompraDet extends AbstractEntity {
         this.precioUnitario = precioUnitario;
     }
 
-    public BigDecimal getTotal() {
-        return total;
+    public BigDecimal getTotaldet() {
+        return totaldet;
     }
 
-    public void setTotal(BigDecimal total) {
-        this.total = total;
+    public void setTotaldet(BigDecimal totaldet) {
+        this.totaldet = totaldet;
     }
 
     public BigDecimal getDescuento() {

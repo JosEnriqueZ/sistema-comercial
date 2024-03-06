@@ -1,6 +1,6 @@
 package com.elolympus;
 
-import com.elolympus.data.SamplePersonRepository;
+import com.elolympus.data.samples.SamplePersonRepository;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.theme.Theme;

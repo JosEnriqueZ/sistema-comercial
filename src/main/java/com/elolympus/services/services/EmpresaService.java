@@ -1,4 +1,4 @@
-package com.elolympus.services;
+package com.elolympus.services.services;
 
 import com.elolympus.data.Empresa.Empresa;
 import com.elolympus.services.repository.EmpresaRepository;

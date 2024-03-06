@@ -89,4 +89,17 @@ public class OrdenRegularizacion extends AbstractEntity {
     public void setDetalles(List<OrdenRegularizacionDet> detalles) {
         this.detalles = detalles;
     }
+
+    //Metodo toString
+    @Override
+    public String toString() {
+        return "OrdenRegularizacion{" +
+                "numero=" + numero +
+                ", fecha=" + fecha +
+                ", almacen=" + almacen +
+                ", movimiento='" + movimiento + '\'' +
+                ", observaciones='" + observaciones + '\'' +
+                ", detalles=" + detalles +
+                '}';
+    }
 }

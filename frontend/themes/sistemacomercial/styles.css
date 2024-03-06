@@ -6,6 +6,8 @@
 @import url('./views/usuario-view.css');
 @import url('./views/kardex-view.css');
 @import url('./views/empresa-view.css');
+@import url('./views/orden-regularizacion-view.css');
+@import url('./views/orden-compra-view.css');
 @import url('./views/editar-tabla-view.css');
 @import url('./views/colaboracion-view.css');
 @import url('./views/form-credit-card-view.css');

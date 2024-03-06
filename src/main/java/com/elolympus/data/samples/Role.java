@@ -1,4 +1,4 @@
-package com.elolympus.data;
+package com.elolympus.data.samples;
 
 public enum Role {
     USER, ADMIN;

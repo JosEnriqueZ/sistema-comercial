@@ -1,7 +1,7 @@
 package com.elolympus.views.Empresa;
 
 import com.elolympus.data.Empresa.Empresa;
-import com.elolympus.services.EmpresaService;
+import com.elolympus.services.services.EmpresaService;
 import com.elolympus.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
@@ -15,6 +15,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
+import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.router.PageTitle;
@@ -33,15 +34,15 @@ public class EmpresaView extends Div {
 
     //Componentes UI
     private final Grid<Empresa> gridempresa = new Grid<>(Empresa.class, false);
-    private final TextField direccion = new TextField("Direccion");
-    private final TextField folderTemps = new TextField("Folder Temps");
-    private final TextField folderReports = new TextField("Folder Reports");
-    private final Checkbox allowBuyWithoutStock = new Checkbox("Allow Buy Without Stock");
-    private final Checkbox requireSalesPin = new Checkbox("Require Sales Pin");
-    private final TextField documentoTipoXdefecto = new TextField("Documento Tipo Xdefecto");
-    private final TextField logoEnterprise = new TextField("Logo Enterprise");
-    private final TextField logoWidth = new TextField("Logo Width");
-    private final TextField commercialName = new TextField("Commercial Name");
+    private final IntegerField direccion = new IntegerField("Direccion");
+    private final TextField folderTemps = new TextField("Informes de carpeta");
+    private final TextField folderReports = new TextField("Informes de carpeta");
+    private final Checkbox allowBuyWithoutStock = new Checkbox("Permitir comprar sin stock");
+    private final Checkbox requireSalesPin = new Checkbox("Requerir pin de ventas");
+    private final IntegerField documentoTipoXdefecto = new IntegerField("Documento Tipo Xdefecto");
+    private final TextField logoEnterprise = new TextField("Logotipo Empresa");
+    private final TextField logoWidth = new TextField("Ancho del logotipo");
+    private final TextField commercialName = new TextField("Nombre comercial");
 
     private final Button save = new Button("Guardar");
     private final Button cancel = new Button("Cancelar");

@@ -1,4 +1,4 @@
-package com.elolympus.views.chate;
+package com.elolympus.views.Chat;
 
 import com.elolympus.security.SecurityUtils;
 import com.elolympus.views.MainLayout;

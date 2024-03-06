@@ -1,7 +1,7 @@
-package com.elolympus.services;
+package com.elolympus.services.samples;
 
-import com.elolympus.data.User;
-import com.elolympus.data.UserRepository;
+import com.elolympus.data.samples.User;
+import com.elolympus.data.samples.UserRepository;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

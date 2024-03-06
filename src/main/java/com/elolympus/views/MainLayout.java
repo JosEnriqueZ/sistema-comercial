@@ -6,13 +6,11 @@ import com.elolympus.views.Administracion.PersonasView;
 import com.elolympus.views.Administracion.RolesView;
 import com.elolympus.views.Administracion.UsuariosView;
 import com.elolympus.views.Empresa.EmpresaView;
-import com.elolympus.views.Logistica.AlmacenView;
-import com.elolympus.views.Logistica.KardexView;
-import com.elolympus.views.Logistica.ProductosView;
+import com.elolympus.views.Logistica.*;
 import com.elolympus.views.Ventas.BoletasView;
 import com.elolympus.views.Ventas.FacturasView;
 import com.elolympus.views.Ventas.NotasCreditoView;
-import com.elolympus.views.chate.ChatEView;
+import com.elolympus.views.Chat.ChatEView;
 import com.elolympus.views.colaboracion.ColaboracionView;
 import com.elolympus.views.direccion.DireccionView;
 import com.elolympus.views.editartabla.EditarTablaView;
@@ -20,8 +18,7 @@ import com.elolympus.views.formcreditcard.FormCreditCardView;
 import com.elolympus.views.formpersona.FormPersonaView;
 import com.elolympus.views.galeriaimagenes.GaleriaImagenesView;
 import com.elolympus.views.grillaporsifunciona.GrillaporsifuncionaView;
-import com.elolympus.views.helloworld.HelloWorldView;
-import com.elolympus.views.bienvenida.BienvenidaView;
+import com.elolympus.views.Bienvenida.BienvenidaView;
 import com.elolympus.views.reportes.ReportesView;
 import com.elolympus.views.sobrenosotros.SobreNosotrosView;
 import com.vaadin.flow.component.UI;
@@ -108,6 +105,8 @@ public class MainLayout extends AppLayout {
             ventas.setPrefixComponent(VaadinIcon.CALC_BOOK.create());
             ventas.addItem(new SideNavItem("Almacen", AlmacenView.class, VaadinIcon.PACKAGE.create()));
             ventas.addItem(new SideNavItem("Kardex", KardexView.class, VaadinIcon.PIN_POST.create()));
+            ventas.addItem(new SideNavItem("Orden Regularizacion", OrdenRegularizacionView.class, VaadinIcon.CALC_BOOK.create()));
+            ventas.addItem(new SideNavItem("Orden de Compra", OrdenCompraView.class, VaadinIcon.CALC_BOOK.create()));
             ventas.addItem(new SideNavItem("Productos", ProductosView.class, VaadinIcon.CART_O.create()));
             nav.addItem(ventas);
         }
@@ -128,20 +127,20 @@ public class MainLayout extends AppLayout {
             nav.addItem(ventas);
         }
 
-        if (accessChecker.hasAccess(HelloWorldView.class)) {
-            SideNavItem navItem = new SideNavItem("Hello World", HelloWorldView.class, LineAwesomeIcon.GLOBE_SOLID.create());
-            SideNavItem subNavItem = new SideNavItem("Inbox", HelloWorldView.class, VaadinIcon.INBOX.create());
-            navItem.addItem(subNavItem);
-            nav.addItem(navItem);
-
-
-            // nav.addItem(new SideNavItem("Hello World", HelloWorldView.class, LineAwesomeIcon.GLOBE_SOLID.create()));
-
-            //SideNavItem messagesLink = new SideNavItem("Messages", MessagesView.class, VaadinIcon.ENVELOPE.create());
-            //messagesLink.addItem(new SideNavItem("Inbox", InboxView.class, VaadinIcon.INBOX.create()));
-            //messagesLink.addItem(new SideNavItem("Sent", SentView.class, VaadinIcon.PAPERPLANE.create()));
-            //messagesLink.addItem(new SideNavItem("Trash", TrashView.class, VaadinIcon.TRASH.create()));
-        }
+//        if (accessChecker.hasAccess(HelloWorldView.class)) {
+//            SideNavItem navItem = new SideNavItem("Hello World", HelloWorldView.class, LineAwesomeIcon.GLOBE_SOLID.create());
+//            SideNavItem subNavItem = new SideNavItem("Inbox", HelloWorldView.class, VaadinIcon.INBOX.create());
+//            navItem.addItem(subNavItem);
+//            nav.addItem(navItem);
+//
+//
+//            // nav.addItem(new SideNavItem("Hello World", HelloWorldView.class, LineAwesomeIcon.GLOBE_SOLID.create()));
+//
+//            //SideNavItem messagesLink = new SideNavItem("Messages", MessagesView.class, VaadinIcon.ENVELOPE.create());
+//            //messagesLink.addItem(new SideNavItem("Inbox", InboxView.class, VaadinIcon.INBOX.create()));
+//            //messagesLink.addItem(new SideNavItem("Sent", SentView.class, VaadinIcon.PAPERPLANE.create()));
+//            //messagesLink.addItem(new SideNavItem("Trash", TrashView.class, VaadinIcon.TRASH.create()));
+//        }
 
         if (accessChecker.hasAccess(SobreNosotrosView.class)) {
             nav.addItem(new SideNavItem("Sobre Nosotros", SobreNosotrosView.class, LineAwesomeIcon.FILE.create()));

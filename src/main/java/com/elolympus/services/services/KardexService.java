@@ -1,4 +1,4 @@
-package com.elolympus.services;
+package com.elolympus.services.services;
 
 import com.elolympus.services.repository.KardexRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +37,5 @@ public class KardexService {
     public void delete(Kardex kardex) {
         repository.delete(kardex);
     }
-
-    // Aquí puedes agregar más métodos según necesites, por ejemplo, buscar por criterios específicos, actualizar, etc.
-
 
 }

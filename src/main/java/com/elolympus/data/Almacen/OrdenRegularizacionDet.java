@@ -79,4 +79,16 @@ public class OrdenRegularizacionDet extends AbstractEntity {
     public void setFechaVencimiento(Date fechaVencimiento) {
         this.fechaVencimiento = fechaVencimiento;
     }
+
+    //toString
+    @Override
+    public String toString() {
+        return "OrdenRegularizacionDet{" +
+                "ordenRegularizacion=" + ordenRegularizacion +
+                ", producto=" + producto +
+                ", cantidad=" + cantidad +
+                ", cantidadFraccion=" + cantidadFraccion +
+                ", fechaVencimiento=" + fechaVencimiento +
+                '}';
+    }
 }

@@ -1,16 +1,11 @@
 package com.elolympus.security;
 
 import com.elolympus.data.Administracion.Usuario;
-import com.elolympus.data.User;
-import com.elolympus.data.UserRepository;
-import com.elolympus.services.UsuarioService;
 import com.elolympus.services.repository.UsuarioRepository;
 import com.elolympus.services.specifications.UsuarioSpecifications;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 import java.util.Optional;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 

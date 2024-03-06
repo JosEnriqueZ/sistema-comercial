@@ -1,5 +1,6 @@
-package com.elolympus.data;
+package com.elolympus.data.samples;
 
+import com.elolympus.data.AbstractEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;

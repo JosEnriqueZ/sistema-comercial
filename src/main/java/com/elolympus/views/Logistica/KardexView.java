@@ -2,7 +2,7 @@ package com.elolympus.views.Logistica;
 
 
 import com.elolympus.data.Almacen.Kardex;
-import com.elolympus.services.KardexService;
+import com.elolympus.services.services.KardexService;
 import com.elolympus.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
@@ -17,6 +17,8 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
+import com.vaadin.flow.component.textfield.BigDecimalField;
+import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.router.PageTitle;
@@ -39,20 +41,20 @@ public class KardexView extends Div {
 
     //Componentes UI
     private Grid<Kardex> gridkardex = new Grid<>(Kardex.class, false);
-    private final TextField ordenId = new TextField("Orden ID");
+    private final IntegerField ordenId = new IntegerField("Orden ID");
     private final DateTimePicker fecha = new DateTimePicker ("Fecha");
     private final DatePicker fechaOrden = new DatePicker("Fecha Orden");
     private final TextField movimiento = new TextField("Movimiento");
-    private final TextField almacen = new TextField("Almacén");
+    private final IntegerField almacen = new IntegerField("Almacén");
     private final TextField origen = new TextField("Origen");
     private final TextField destino = new TextField("Destino");
-    private final TextField precioCosto = new TextField("Precio Costo");
-    private final TextField precioVenta = new TextField("Precio Venta");
-    private final TextField stockAnterior = new TextField("Stock Anterior");
-    private final TextField ingreso = new TextField("Ingreso");
-    private final TextField salida = new TextField("Salida");
-    private final TextField stock = new TextField("Stock");
-    private final TextField producto = new TextField("Producto");
+    private final BigDecimalField precioCosto = new BigDecimalField("Precio Costo");
+    private final BigDecimalField precioVenta = new BigDecimalField("Precio Venta");
+    private final BigDecimalField stockAnterior = new BigDecimalField("Stock Anterior");
+    private final BigDecimalField ingreso = new BigDecimalField("Ingreso");
+    private final BigDecimalField salida = new BigDecimalField("Salida");
+    private final BigDecimalField stock = new BigDecimalField("Stock");
+    private final IntegerField producto = new IntegerField("Producto");
     private final DatePicker fechaVencimiento = new DatePicker("Fecha Vencimiento");
     private final Button save = new Button("Guardar");
     private final Button cancel = new Button("Cancelar");
@@ -115,11 +117,11 @@ public class KardexView extends Div {
         createButtonLayout(editorDiv);
         return editorDiv;
     }
-    private void createButtonLayout(Div editorLayout){
+    private void createButtonLayout(Div div){
         HorizontalLayout buttonLayout = new HorizontalLayout();
         buttonLayout.setClassName("button-layout");
         buttonLayout.add(save, cancel, delete);
-        editorLayout.add(buttonLayout);
+        div.add(buttonLayout);
     }
     private Component createGridLayout() {
         Div gridContainer = new Div();
