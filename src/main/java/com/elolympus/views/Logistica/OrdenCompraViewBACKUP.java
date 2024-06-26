@@ -28,10 +28,10 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
-@PageTitle("Orden de Compra")
-@Route(value = "ordenCompra", layout = MainLayout.class)
+@PageTitle("Orden de CompraBACKUP")
+@Route(value = "ordenComprabackup", layout = MainLayout.class)
 @PermitAll
-public class OrdenCompraView extends Div {
+public class OrdenCompraViewBACKUP extends Div {
 
     private final OrdenCompraService ordenCompraService;
     private final OrdenCompraDetService ordenCompraDetService;
@@ -79,7 +79,7 @@ public class OrdenCompraView extends Div {
     private final FormLayout detailForm = new FormLayout();
 
     //constructor
-    public OrdenCompraView(OrdenCompraService ordenCompraService, OrdenCompraDetService ordenCompraDetService) {
+    public OrdenCompraViewBACKUP(OrdenCompraService ordenCompraService, OrdenCompraDetService ordenCompraDetService) {
         this.ordenCompraService = ordenCompraService;
         this.ordenCompraDetService = ordenCompraDetService;
         init();
@@ -200,7 +200,7 @@ public class OrdenCompraView extends Div {
             }
             clearForm();
             refreshGrids();
-            UI.getCurrent().navigate(OrdenCompraView.class);
+            UI.getCurrent().navigate(OrdenCompraViewBACKUP.class);
         }catch (ObjectOptimisticLockingFailureException exception) {
             Notification n = Notification.show(
                     "Error al actualizar los datos. Alguien más actualizó el registro mientras usted hacía cambios.");

@@ -3,6 +3,7 @@ package com.elolympus.views;
 import com.elolympus.data.Administracion.Usuario;
 import com.elolympus.security.AuthenticatedUser;
 import com.elolympus.views.Administracion.PersonasView;
+import com.elolympus.views.Administracion.PersonasView2;
 import com.elolympus.views.Administracion.RolesView;
 import com.elolympus.views.Administracion.UsuariosView;
 import com.elolympus.views.Empresa.EmpresaView;
@@ -106,7 +107,7 @@ public class MainLayout extends AppLayout {
             ventas.addItem(new SideNavItem("Almacen", AlmacenView.class, VaadinIcon.PACKAGE.create()));
             ventas.addItem(new SideNavItem("Kardex", KardexView.class, VaadinIcon.PIN_POST.create()));
             ventas.addItem(new SideNavItem("Orden Regularizacion", OrdenRegularizacionView.class, VaadinIcon.CALC_BOOK.create()));
-            ventas.addItem(new SideNavItem("Orden de Compra", OrdenCompraView.class, VaadinIcon.CALC_BOOK.create()));
+            ventas.addItem(new SideNavItem("Orden de Compra", ListOrdenCompraView.class, VaadinIcon.CALC_BOOK.create()));
             ventas.addItem(new SideNavItem("Productos", ProductosView.class, VaadinIcon.CART_O.create()));
             nav.addItem(ventas);
         }
@@ -114,7 +115,7 @@ public class MainLayout extends AppLayout {
         if (accessChecker.hasAccess(BienvenidaView.class)){
             SideNavItem ventas = new SideNavItem("Administración");
             ventas.setPrefixComponent(VaadinIcon.COG.create());
-            ventas.addItem(new SideNavItem("Personas", PersonasView.class, VaadinIcon.USER_CHECK.create()));
+            ventas.addItem(new SideNavItem("Personas", PersonasView2.class, VaadinIcon.USER_CHECK.create()));
             ventas.addItem(new SideNavItem("Roles", RolesView.class, VaadinIcon.USERS.create()));
             ventas.addItem(new SideNavItem("Usuarios", UsuariosView.class, VaadinIcon.USER.create()));
             nav.addItem(ventas);

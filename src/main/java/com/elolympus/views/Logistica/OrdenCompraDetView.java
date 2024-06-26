@@ -28,12 +28,12 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
-@PageTitle("Orden de Compra")
-@Route(value = "ordenCompra", layout = MainLayout.class)
+@PageTitle("Orden de Compra Detalle")
+@Route(value = "ordenCompraDet", layout = MainLayout.class)
 @PermitAll
-public class OrdenCompraView extends Div {
+public class OrdenCompraDetView extends Div {
 
-    private final OrdenCompraService ordenCompraService;
+    //private final OrdenCompraService ordenCompraService;
     private final OrdenCompraDetService ordenCompraDetService;
     private OrdenCompra ordenCompra;
     private OrdenCompraDet ordenCompraDet;
@@ -79,8 +79,7 @@ public class OrdenCompraView extends Div {
     private final FormLayout detailForm = new FormLayout();
 
     //constructor
-    public OrdenCompraView(OrdenCompraService ordenCompraService, OrdenCompraDetService ordenCompraDetService) {
-        this.ordenCompraService = ordenCompraService;
+    public OrdenCompraDetView(OrdenCompraDetService ordenCompraDetService) {
         this.ordenCompraDetService = ordenCompraDetService;
         init();
     }
@@ -96,7 +95,7 @@ public class OrdenCompraView extends Div {
     }
 
     private void refreshGrids() {
-        grid.setItems(ordenCompraService.findAll());
+//        grid.setItems(ordenCompraService.findAll());
     }
 
     private void setupGrid() {
@@ -189,7 +188,7 @@ public class OrdenCompraView extends Div {
                 ordenCompraDet = new OrdenCompraDet();
             }
             if (binder.writeBeanIfValid(ordenCompra) && binderDet.writeBeanIfValid(ordenCompraDet)) {
-                ordenCompraService.update(ordenCompra);
+//                ordenCompraService.update(ordenCompra);
                 ordenCompraDet.setOrdenCompra(ordenCompra);
                 ordenCompraDetService.update(ordenCompraDet);
                 refreshGrids();
@@ -200,7 +199,7 @@ public class OrdenCompraView extends Div {
             }
             clearForm();
             refreshGrids();
-            UI.getCurrent().navigate(OrdenCompraView.class);
+            UI.getCurrent().navigate(OrdenCompraDetView.class);
         }catch (ObjectOptimisticLockingFailureException exception) {
             Notification n = Notification.show(
                     "Error al actualizar los datos. Alguien más actualizó el registro mientras usted hacía cambios.");
@@ -211,7 +210,7 @@ public class OrdenCompraView extends Div {
 
     private void deleteOrdenCompra(){
         if (ordenCompra != null) {
-            ordenCompraService.delete(ordenCompra);
+//            ordenCompraService.delete(ordenCompra);
             ordenCompraDetService.delete(ordenCompraDet);
             refreshGrids();
             clearForm();

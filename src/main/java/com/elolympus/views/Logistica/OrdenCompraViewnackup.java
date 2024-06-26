@@ -1,10 +1,8 @@
 package com.elolympus.views.Logistica;
 
 import com.elolympus.component.DataGrid;
-import com.elolympus.data.Administracion.Persona;
 import com.elolympus.data.Logistica.OrdenCompra;
 import com.elolympus.data.Logistica.OrdenCompraDet;
-import com.elolympus.services.services.OrdenCompraDetService;
 import com.elolympus.services.services.OrdenCompraService;
 import com.elolympus.views.MainLayout;
 import com.vaadin.flow.component.Component;
@@ -26,16 +24,15 @@ import com.vaadin.flow.component.textfield.BigDecimalField;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
-import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
-@PageTitle("Orden de Compra")
-@Route(value = "ordenCompra", layout = MainLayout.class)
+@PageTitle("Orden de Comprabackuppp")
+@Route(value = "ordenComprabnacluaaaa", layout = MainLayout.class)
 @PermitAll
-public class OrdenCompraView extends VerticalLayout {
+public class OrdenCompraViewnackup extends Dialog {
 
     private final OrdenCompraService ordenCompraService;
     private OrdenCompra ordenCompra;
@@ -67,8 +64,7 @@ public class OrdenCompraView extends VerticalLayout {
     private final Button save = new Button("Guardar");
     private final Button cancel = new Button("Cancelar");
     private final Button delete = new Button("Eliminar");
-    private final FormLayout headerForm = new FormLayout();
-    private final FormLayout detailForm = new FormLayout();
+    private final FormLayout form = new FormLayout();
 
 
     private final VerticalLayout panel = new VerticalLayout();
@@ -80,13 +76,16 @@ public class OrdenCompraView extends VerticalLayout {
     private final DatePicker FechaFin        = new DatePicker("Fecha Fin");
 
     //constructor
-    public OrdenCompraView(OrdenCompraService ordenCompraService) {
+    public OrdenCompraViewnackup(OrdenCompraService ordenCompraService) {
         this.ordenCompraService = ordenCompraService;
 
         initDataGrid();
         this.panelFiltro.add(Sucursal,FechaInicio,FechaFin);
+        this.form.add(almacenEntrega,numeroProveedor,direccionProveedor,fecha,fechaEntrega,
+                formaPago,moneda,impuesto,observaciones,tipoCambio,diasCredito,sucursal,
+                impuesto_incluido,documento_pago,totalCobrado,total);
         this.panelButton.add(save,delete,cancel);
-        this.panel.add(panelFiltro,dataGrid,panelButton);
+        this.panel.add(form,dataGrid,panelButton);
         this.add(panel);
         init();
     }
@@ -147,10 +146,6 @@ public class OrdenCompraView extends VerticalLayout {
         Div headerLabel = new Div();
         headerLabel.setText("Datos de Cabecera");
         headerLabel.addClassNames("header-label"); // Añade tu clase de CSS para estilizar la etiqueta
-        headerForm.addClassName("header-form-layout");
-        headerForm.add(almacenEntrega, numeroProveedor, direccionProveedor, fecha, fechaEntrega, formaPago, moneda, impuesto, total, observaciones, totalCobrado, tipoCambio, diasCredito, sucursal, impuesto_incluido, documento_pago);
-
-        editorCompraDiv.add(headerLabel, headerForm, detailForm);
 
         binder.bindInstanceFields(this);
         setupButtons(editorCompraDiv);
@@ -159,7 +154,7 @@ public class OrdenCompraView extends VerticalLayout {
     private void setupButtons(Div div){
         //configuración de botones
         save.addClickListener(event -> saveOrdenCompra());
-        cancel.addClickListener(event -> clearForm());
+        cancel.addClickListener(event -> this.close());
         delete.addClickListener(event -> deleteOrdenCompra());
 
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -217,7 +212,7 @@ public class OrdenCompraView extends VerticalLayout {
             }
             clearForm();
             refreshGrids();
-            UI.getCurrent().navigate(OrdenCompraView.class);
+            UI.getCurrent().navigate(OrdenCompraViewnackup.class);
         }catch (ObjectOptimisticLockingFailureException exception) {
             Notification n = Notification.show(
                     "Error al actualizar los datos. Alguien más actualizó el registro mientras usted hacía cambios.");

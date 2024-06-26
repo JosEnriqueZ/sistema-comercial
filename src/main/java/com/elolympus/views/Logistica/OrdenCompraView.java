@@ -2,10 +2,13 @@ package com.elolympus.views.Logistica;
 
 import com.elolympus.component.DataGrid;
 import com.elolympus.data.Logistica.OrdenCompra;
+import com.elolympus.data.Logistica.OrdenCompraDet;
 import com.elolympus.services.services.OrdenCompraService;
 import com.elolympus.views.MainLayout;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -15,6 +18,8 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.BigDecimalField;
+import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.router.PageTitle;
@@ -23,10 +28,10 @@ import jakarta.annotation.security.PermitAll;
 
 import java.time.LocalDate;
 
-@PageTitle("Lista Orden de Compra")
-@Route(value = "listOrdenCompra", layout = MainLayout.class)
+@PageTitle("Orden de Compra")
+@Route(value = "OrdenCompra", layout = MainLayout.class)
 @PermitAll
-public class ListOrdenCompraView extends Div {
+public class OrdenCompraView extends Div {
 
     private final OrdenCompraService ordenCompraService;
     private OrdenCompra ordenCompra;
@@ -34,13 +39,11 @@ public class ListOrdenCompraView extends Div {
 
     //GRID
     private final Grid<OrdenCompra> grid = new Grid<>(OrdenCompra.class);
-    private final DataGrid<OrdenCompra> dataGrid = new DataGrid<>(true,false);
+    private final DataGrid<OrdenCompraDet> dataGrid = new DataGrid<>(true,false);
     private final Button editar = new Button("EDITAR");
     private final Button agregar = new Button("AGREGAR");
     private final Button eliminar = new Button("ELIMINAR");
     private final Button cancelar = new Button("CANCELAR");
-    private final FormLayout headerForm = new FormLayout();
-    private final FormLayout detailForm = new FormLayout();
 
 
     private final VerticalLayout panel = new VerticalLayout();
@@ -51,14 +54,39 @@ public class ListOrdenCompraView extends Div {
     private final DatePicker FechaInicio     = new DatePicker("Fecha Inicio",LocalDate.now());
     private final DatePicker FechaFin        = new DatePicker("Fecha Fin",LocalDate.now());
 
+    //TEXTFIELD UI OrdenCompra
+
+    private final Text titulo = new Text("ORDEN DE COMPRA");
+    private final IntegerField almacenEntrega = new IntegerField("Almacen Entrega");
+    private final IntegerField numeroProveedor = new IntegerField("Numero Proveedor");
+    private final IntegerField direccionProveedor = new IntegerField("Direccion Proveedor");
+    private final DatePicker fecha = new DatePicker("Fecha");
+    private final DatePicker fechaEntrega = new DatePicker("Fecha Entrega");
+    private final IntegerField formaPago = new IntegerField("Forma Pago");
+    private final IntegerField moneda = new IntegerField("Moneda");
+    private final IntegerField impuesto = new IntegerField("Impuesto");
+    private final BigDecimalField total = new BigDecimalField("Total");
+    private final TextField observaciones = new TextField("Observaciones");
+    private final BigDecimalField totalCobrado = new BigDecimalField("Total Cobrado");
+    private final BigDecimalField tipoCambio = new BigDecimalField("Tipo Cambio");
+    private final IntegerField diasCredito = new IntegerField("Dias Credito");
+    private final IntegerField sucursal = new IntegerField("Sucursal");
+    private final Checkbox impuesto_incluido = new Checkbox("Impuesto Incluido");
+    private final TextField documento_pago = new TextField("Documento Pago");
+    private final FormLayout form = new FormLayout();
+
     //constructor
-    public ListOrdenCompraView(OrdenCompraService ordenCompraService) {
+    public OrdenCompraView(OrdenCompraService ordenCompraService) {
         this.ordenCompraService = ordenCompraService;
 
 
+        initDataGrid();
         this.panelFiltro.add(Sucursal,FechaInicio,FechaFin);
-        this.panelButton.add(editar,agregar,eliminar,cancelar);
-        this.panel.add(panelFiltro,dataGrid,panelButton);
+        this.form.add(almacenEntrega,numeroProveedor,direccionProveedor,fecha,fechaEntrega,
+                formaPago,moneda,impuesto,observaciones,tipoCambio,diasCredito,sucursal,
+                impuesto_incluido,documento_pago,totalCobrado,total);
+        this.panelButton.add(agregar,editar,eliminar,cancelar);
+        this.panel.add(form,dataGrid,panelButton);
         this.add(panel);
         init();
     }
@@ -80,49 +108,46 @@ public class ListOrdenCompraView extends Div {
         agregar.addClickListener(event -> add());
         //cancelar.addClickListener(event -> deleteOrdenCompra());
         eliminar.addClickListener(event -> deleteOrdenCompra());
-
         agregar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         cancelar.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         eliminar.addThemeVariants(ButtonVariant.LUMO_ERROR);
-
         //buttons.setClassName("button-layout");
     }
 
     private void initDataGrid(){
-        dataGrid.addColumn(OrdenCompra::getAlmacenEntrega,"Almacen Entrega");
-        dataGrid.addColumn(OrdenCompra::getNumeroProveedor,"Numero Proveedor");
-        dataGrid.addColumn(OrdenCompra::getDireccionProveedor,"Direccion Proveedor");
-        dataGrid.addColumn(OrdenCompra::getFecha,"Fecha");
-        dataGrid.addColumn(OrdenCompra::getFechaEntrega,"Fecha Entrega");
-        dataGrid.addColumn(OrdenCompra::getMoneda,"Moneda");
-        dataGrid.addColumn(OrdenCompra::getImpuesto,"Impuesto");
-        dataGrid.addColumn(OrdenCompra::getObservaciones,"Observaciones");
-        dataGrid.addColumn(OrdenCompra::getTotalCobrado,"Total Cobrado");
-        dataGrid.addColumn(OrdenCompra::getTipoCambio,"Tipo Cambio");
-        dataGrid.addColumn(OrdenCompra::getDiasCredito,"Credias/Dias");
-        dataGrid.addColumn(OrdenCompra::getSucursal,"Sucursal");
-        dataGrid.addColumn(OrdenCompra::getImpuesto_incluido,"Impuesto Incluido");
-        dataGrid.addColumn(OrdenCompra::getDocumento_pago,"Documento Pago");
-        dataGrid.addColumn(OrdenCompra::getTotal,"Total");
+        dataGrid.addColumn(OrdenCompraDet::getOrdenCompra,"Orden Compra");
+        dataGrid.addColumn(OrdenCompraDet::getAlmacen,"Almacen");
+        dataGrid.addColumn(OrdenCompraDet::getProducto,"Producto");
+        dataGrid.addColumn(OrdenCompraDet::getCantidad,"Cantidad");
+        dataGrid.addColumn(OrdenCompraDet::getCantidadTg,"Cantidad TG");
+        dataGrid.addColumn(OrdenCompraDet::getDescuento,"Descuento");
+        dataGrid.addColumn(OrdenCompraDet::getFechaVencimiento,"Fecha Vencimiento");
+        dataGrid.addColumn(OrdenCompraDet::getPrecioUnitario,"Precio Unitario");
+        dataGrid.addColumn(OrdenCompraDet::getLote,"Lote");
+        dataGrid.addColumn(OrdenCompraDet::getCantidadUsada,"Cantidad Usada");
+        dataGrid.addColumn(OrdenCompraDet::getTotaldet,"Total");
 
-        dataGrid.asSingleSelect().addValueChangeListener(evt -> editOrdenCompra(evt.getValue()));
+
+        dataGrid.asSingleSelect().addValueChangeListener(evt -> editOrdenCompraDet(evt.getValue()));
     }
 
     private void refreshGrids() {
-        dataGrid.setList(ordenCompraService.findAll());
+       // dataGrid.setList(ordenCompraService.findAll());
     }
 
 
 
     private void add(){
-        OrdenCompraViewnackup ordenCompra = new OrdenCompraViewnackup(this.ordenCompraService);
-        Dialog view = new Dialog();
-        view.add(ordenCompra);
-        view.open();
+//        OrdenCompraDetView ordenCompra = new OrdenCompraDetView(this.ordenCompraService);
+//        Dialog view = new Dialog();
+//        view.setHeaderTitle("ORDEN DE COMPRA DETALLE");
+//        view.add(ordenCompra);
+//        view.open();
     }
 
+
     private void deleteOrdenCompra(){
-        ordenCompra = dataGrid.getSelectedValue();
+        //ordenCompra = dataGrid.getSelectedValue();
         if (ordenCompra != null) {
             ordenCompraService.delete(ordenCompra);
             refreshGrids();
@@ -133,7 +158,7 @@ public class ListOrdenCompraView extends Div {
     }
 
 
-    private void editOrdenCompra(OrdenCompra ordenCompra){
+    private void editOrdenCompraDet(OrdenCompraDet ordenCompraDet){
 
     }
 

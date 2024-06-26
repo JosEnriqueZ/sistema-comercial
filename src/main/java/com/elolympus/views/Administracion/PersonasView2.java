@@ -1,5 +1,6 @@
 package com.elolympus.views.Administracion;
 
+import com.elolympus.component.DataTable;
 import com.elolympus.data.Administracion.Persona;
 import com.elolympus.services.services.PersonaService;
 import com.elolympus.views.MainLayout;
@@ -31,14 +32,14 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
-import java.util.Optional;
 
 import java.util.List;
+import java.util.Optional;
 
 @PageTitle("Personas")
-@Route(value = "persona/:PersonaID?/:action?(edit)", layout = MainLayout.class)
+@Route(value = "persona2/:PersonaID?/:action?(edit)", layout = MainLayout.class)
 @PermitAll
-public class PersonasView extends Div implements BeforeEnterObserver{
+public class PersonasView2 extends Div implements BeforeEnterObserver{
 
     private final PersonaService PersonaService;
     private BeanValidationBinder<Persona> binder;
@@ -69,8 +70,10 @@ public class PersonasView extends Div implements BeforeEnterObserver{
     private final Button delete = new Button("Eliminar",VaadinIcon.TRASH.create());
     public final SplitLayout splitLayout = new SplitLayout();
 
+    public DataTable<Persona> grilla = new DataTable<>();
+
     @Autowired
-    public PersonasView(PersonaService PersonaService) {
+    public PersonasView2(PersonaService PersonaService) {
         this.PersonaService = PersonaService;
         try {
             // Configure Form
@@ -197,7 +200,7 @@ public class PersonasView extends Div implements BeforeEnterObserver{
             clearForm();
             refreshGrid();
             Notification.show("Datos actualizados");
-            UI.getCurrent().navigate(PersonasView.class);
+            UI.getCurrent().navigate(PersonasView2.class);
         } catch (ObjectOptimisticLockingFailureException exception) {
             Notification n = Notification.show(
                     "Error al actualizar los datos. Alguien más actualizó el registro mientras usted hacía cambios.");
@@ -224,7 +227,7 @@ public class PersonasView extends Div implements BeforeEnterObserver{
             clearForm();
             refreshGrid();
             Notification.show("Persona Eliminada");
-            UI.getCurrent().navigate(PersonasView.class);
+            UI.getCurrent().navigate(PersonasView2.class);
         } catch (ObjectOptimisticLockingFailureException exception) {
             Notification n = Notification.show(
                     "Error al Eliminar. Alguien más actualizó el registro mientras usted hacía cambios.");
@@ -242,7 +245,7 @@ public class PersonasView extends Div implements BeforeEnterObserver{
             UI.getCurrent().navigate(String.format(this.PERSONA_EDIT_ROUTE_TEMPLATE, persona.getId()));
         } else {
             clearForm();
-            UI.getCurrent().navigate(PersonasView.class);
+            UI.getCurrent().navigate(PersonasView2.class);
             btnSave.setText("Guardar");
         }
     }
@@ -280,7 +283,7 @@ public class PersonasView extends Div implements BeforeEnterObserver{
                 // when a row is selected but the data is no longer available,
                 // refresh grid
                 refreshGrid();
-                event.forwardTo(PersonasView.class);
+                event.forwardTo(PersonasView2.class);
             }
         }
     }

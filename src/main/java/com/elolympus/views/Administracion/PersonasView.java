@@ -68,6 +68,7 @@ public class PersonasView extends Div implements BeforeEnterObserver{
     private final Button save = new Button("Guardar");
     private final Button delete = new Button("Eliminar",VaadinIcon.TRASH.create());
     public final SplitLayout splitLayout = new SplitLayout();
+
     @Autowired
     public PersonasView(PersonaService PersonaService) {
         this.PersonaService = PersonaService;
